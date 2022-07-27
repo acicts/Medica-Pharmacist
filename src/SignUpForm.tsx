@@ -67,22 +67,22 @@ const SignupForm = () => {
         <Dropzone onDrop={console.log}>
           {({ getRootProps, getInputProps }) => (
             <section
-              className="aspect-square w-40 border-gray-400 border rounded-xl px-3 text-center items-center flex flex-col justify-center cursor-pointer"
+              className="aspect-square w-40 border-gray-300 border-2 rounded-xl px-3 text-center items-center flex flex-col justify-center cursor-pointer"
               {...getRootProps()}
             >
-              <BsCloudUploadFill className="w-32 h-16" fill="#7d7d7d" />
+              <BsCloudUploadFill className="w-32 h-16" fill="#555" />
               <input
                 {...getInputProps()}
                 accept="image/png, image/jpg, image/jpeg"
               />
-              {<p className="text-gray-500">Upload JPG, JPEG, PNG file</p>}
+              {<p className="text-[#6C6C6C]">Upload JPG, JPEG, PNG file</p>}
             </section>
           )}
         </Dropzone>
       </div>
       <input
         type="submit"
-        className="w-40 h-12 bg-[#5E9486] rounded-md text-white font-bold text-[1.6rem] mt-20"
+        className="w-40 h-12 bg-[#2F8D76] rounded-md text-white font-bold text-[1.6rem] mt-20"
         value="Next"
       />
     </form>
