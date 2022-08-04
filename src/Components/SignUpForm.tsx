@@ -26,15 +26,15 @@ const Field = ({
 }: Props) => {
   const { [name]: error } = formState.errors;
   return (
-    <div className="flex flex-col text-gray-500 focus-within:text-[#5E9486]">
-      <label htmlFor={name} className="text-[1.2rem]">
+    <div className="flex flex-col text-gray-500 focus-within:text-[#5E9486] w-full">
+      <label htmlFor={name} className="text-md">
         {children}
       </label>
       <input
         {...register(name, { required: true })}
         type={type}
         autoFocus={autofocus}
-        className="focus:border-[#5E9486] rounded-xl border-2 border-gray-300 w-10/12 min-w-[300px] h-10 px-3 mb-3 text-black"
+        className="focus:border-[#5E9486] rounded-md border-2 border-gray-300 w-full min-w-[300px] h-10 px-3 text-black"
       />
       {error && <span className="text-red-500">This field is required</span>}
     </div>
@@ -48,7 +48,7 @@ const SignupForm = () => {
   return (
     <form
       onSubmit={form.handleSubmit(onSubmit)}
-      className="w-4/5 flex flex-col mt-10"
+      className="flex flex-col md:w-full w-8/12 md:h-[70vh] h-[75vh] items-start justify-between"
     >
       <Field form={form} name="shopName" autofocus>
         Shop name
@@ -60,8 +60,8 @@ const SignupForm = () => {
       <Field form={form} name="ID">
         Pharmacy Pass ID
       </Field>
-      <div className="">
-        <label htmlFor="upload" className="text-gray-500 text-[1.2rem]">
+      <div className="w-full">
+        <label htmlFor="upload" className="text-gray-500 text-md text-center md:text-left w-full">
           Logo
         </label>
         <Dropzone onDrop={console.log}>
@@ -82,7 +82,7 @@ const SignupForm = () => {
       </div>
       <input
         type="submit"
-        className="w-40 h-12 bg-[#2F8D76] rounded-md text-white font-bold text-[1.6rem] mt-20"
+        className="w-40 h-12 bg-[#2F8D76] rounded-md text-white font-bold text-[1.6rem]"
         value="Next"
       />
     </form>
