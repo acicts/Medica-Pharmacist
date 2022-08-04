@@ -1,4 +1,4 @@
-import SignUpForm from "./SignUpForm";
+import SignUpForm from "../Components/SignUpForm";
 
 const SignUp = () => (
   <div className="flex w-full">
