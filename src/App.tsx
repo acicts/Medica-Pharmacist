@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { Route, Routes, Navigate } from "react-router-dom";
 import AddMedicine from "./Pages/AddMedicine";
 import Dashboard from "./Pages/Dashboard";
 import EditMedicine from "./Pages/EditMedicine";
@@ -13,6 +13,7 @@ import Verify from "./Pages/Verify";
 const App = () => (
   <>
         <Routes>
+              <Route path="/" element={<Navigate to={"/dashboard"} />} />
               <Route path="/signup" element={<Signup />} />
               <Route path="/login" element={<Login />} />
               <Route path="/reset/reqeust" element={<SendResetPwdEmail />} />
