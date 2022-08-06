@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { ReactNode, useState } from "react";
 import Dropzone from "react-dropzone";
 import { SubmitHandler, useForm, UseFormReturn } from "react-hook-form";
 import { BsCloudUploadFill } from "react-icons/bs";
@@ -26,65 +26,97 @@ const Field = ({
 }: Props) => {
   const { [name]: error } = formState.errors;
   return (
-    <div className="flex flex-col text-gray-500 focus-within:text-[#5E9486] w-full">
-      <label htmlFor={name} className="text-md">
+    <div className="flex flex-col text-gray-500 focus-within:text-[#5E9486] w-full my-[15px]">
+      <label htmlFor={name} className="text-sm mb-[4px] text-[#6C6C6C]">
         {children}
       </label>
       <input
         {...register(name, { required: true })}
         type={type}
         autoFocus={autofocus}
-        className="focus:border-[#5E9486] rounded-md border-2 border-gray-300 w-full min-w-[300px] h-10 px-3 text-black"
+        className="focus:border-[#5E9486] rounded-xl border-2 border-[#BCBCBC] w-full min-w-[300px] h-10 px-3 text-black"
       />
       {error && <span className="text-red-500">This field is required</span>}
     </div>
   );
 };
 
+const ContactSection = (props: {form: UseFormReturn<Inputs>}) => {
+  return <section>
+        <Field form={props.form} name="shopName" autofocus>
+            Shop name
+          </Field>
+
+          <Field form={props.form} name="email" type="email">
+            Email
+          </Field>
+          <Field form={props.form} name="ID">
+            Pharmacy Pass ID
+          </Field>
+          <div className="w-full">
+            <label htmlFor="upload" className="text-gray-500 text-md text-center lg:text-left w-full">
+              Logo
+            </label>
+            <Dropzone onDrop={console.log}>
+              {({ getRootProps, getInputProps }) => (
+                <section
+                  className="aspect-square w-40 border-gray-300 border-2 rounded-xl px-3 text-center items-center flex flex-col justify-center cursor-pointer"
+                  {...getRootProps()}
+                >
+                  <BsCloudUploadFill className="w-24 h-12" fill="#6c6c6c" />
+                  <input
+                    {...getInputProps()}
+                    accept="image/png, image/jpg, image/jpeg"
+                  />
+                  {<p className="text-[#6C6C6C] text-[0.8rem]">Upload JPG, JPEG, PNG file</p>}
+                </section>
+              )}
+            </Dropzone>
+          </div>
+          
+    </section>
+}
+
+const VerificationDataSection = () => {
+  return <section>Verification Data</section>
+}
+
+const CredentialsSection = () => {
+  return <section>Credentials</section>
+}
+
 const SignupForm = () => {
   const form = useForm<Inputs>();
   const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data);
+  const [section, setSection] = useState<"a" | "b" | "c">("a");
 
+  const nextSectionHandler = () => {
+    setSection(curr => curr === "a" ? "b" : "c")
+  }
+  const prevSectionHandler = () => {
+    setSection(curr => curr === "c" ? "b" : "a");
+  }
   return (
     <form
       onSubmit={form.handleSubmit(onSubmit)}
-      className="flex flex-col md:w-full w-8/12 md:h-[70vh] h-[75vh] items-start justify-between"
+      className="items-start justify-between w-full"
     >
-      <Field form={form} name="shopName" autofocus>
-        Shop name
-      </Field>
-
-      <Field form={form} name="email" type="email">
-        Email
-      </Field>
-      <Field form={form} name="ID">
-        Pharmacy Pass ID
-      </Field>
-      <div className="w-full">
-        <label htmlFor="upload" className="text-gray-500 text-md text-center md:text-left w-full">
-          Logo
-        </label>
-        <Dropzone onDrop={console.log}>
-          {({ getRootProps, getInputProps }) => (
-            <section
-              className="aspect-square w-40 border-gray-300 border-2 rounded-xl px-3 text-center items-center flex flex-col justify-center cursor-pointer"
-              {...getRootProps()}
-            >
-              <BsCloudUploadFill className="w-32 h-16" fill="#555" />
-              <input
-                {...getInputProps()}
-                accept="image/png, image/jpg, image/jpeg"
-              />
-              {<p className="text-[#6C6C6C]">Upload JPG, JPEG, PNG file</p>}
-            </section>
-          )}
-        </Dropzone>
+      {section === "a" ? 
+        <ContactSection form={form} />: section === "b" ? 
+        <VerificationDataSection /> : 
+        <CredentialsSection /> 
+      }
+      <div className="flex items-end justify-between w-[40px] ml-[5px] mt-[45px] mb-[15px]">
+        <div className="w-[8px] h-[8px] rounded-full bg-[#2F8D76]"></div>
+        <div className="w-[8px] h-[8px] rounded-full bg-[#2F8D76]"></div>
+        <div className="w-[8px] h-[8px] rounded-full bg-[#2F8D76]"></div>
       </div>
-      <input
-        type="submit"
-        className="w-40 h-12 bg-[#2F8D76] rounded-md text-white font-bold text-[1.6rem]"
-        value="Next"
-      />
+      <div className="flex items-center justify-between w-52 md:w-80">
+      {(section === "b" || section === "c") && <button type="button" onClick={prevSectionHandler} className="register-btn">Back</button>}
+      {section === "a" || section === "b" ? 
+        <button onClick={nextSectionHandler} type="button" className="register-btn">Next</button>
+       :<button type="submit" className="register-btn">Submit</button>}
+      </div>
     </form>
   );
 };
