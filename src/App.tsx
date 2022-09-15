@@ -29,9 +29,30 @@ const App = () => (
 					</Layout>
 				}
 			/>
-			<Route path='/profile' element={<Profile />} />
-			<Route path='/medicine/new' element={<AddMedicine />} />
-			<Route path='/medicine/:id' element={<EditMedicine />} />
+			<Route
+				path='/stocks'
+				element={
+					<Layout>
+						<Profile />
+					</Layout>
+				}
+			/>
+			<Route
+				path='/stocks/new'
+				element={
+					<Layout>
+						<AddMedicine />
+					</Layout>
+				}
+			/>
+			<Route
+				path='/stocks/:id'
+				element={
+					<Layout>
+						<EditMedicine />
+					</Layout>
+				}
+			/>
 		</Routes>
 	</>
 );
