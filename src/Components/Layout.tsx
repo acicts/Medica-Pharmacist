@@ -35,15 +35,20 @@ const Layout = (props: { children: ReactElement | ReactElement[] }) => {
 	const [isNav, setIsNav] = useState(false);
 	const animationVariants = {
 		clicked: {
-			scale: 1,
+			x: '0%',
 			opacity: 1,
 			transition: {
-				ease: 0,
+				duration: 0.3,
+				ease: 'easeOut',
 			},
 		},
 		notClicked: {
-			scale: 0,
+			x: '-100%',
 			opacity: 0,
+			transition: {
+				duration: 0.3,
+				ease: 'easeOut',
+			},
 		},
 	};
 	const hamburgerVariants = {
