@@ -97,7 +97,7 @@ const Layout = (props: { children: ReactElement | ReactElement[] }) => {
 				variants={animationVariants}
 				animate={isNav ? 'clicked' : 'notClicked'}
 				initial='notClicked'
-				className='absolute w-[70%] bg-[#1529279c] left-0 top-0 h-[100vh] sm:w-[40%] lg:hidden'
+				className='backdrop-blur-md absolute w-[70%] bg-[#1529279c] left-0 top-0 h-[100vh] sm:w-[40%] lg:hidden'
 			>
 				<div className='flex items-center justify-between w-full h-[10vh] p-[10px] bg-[#021F13]'>
 					<div className='flex h-max w-max'>
