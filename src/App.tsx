@@ -4,6 +4,7 @@ import AddMedicine from './Pages/AddMedicine';
 import Dashboard from './Pages/Dashboard';
 import EditMedicine from './Pages/EditMedicine';
 import Login from './Pages/Login';
+import Medicine from './Pages/Medicine';
 import Profile from './Pages/Profile';
 import ResetPwd from './Pages/ResetPwd';
 import SendResetPwdEmail from './Pages/SendPwdResetEmail';
@@ -33,7 +34,7 @@ const App = () => (
 				path='/stocks'
 				element={
 					<Layout>
-						<Profile />
+						<Medicine />
 					</Layout>
 				}
 			/>
@@ -50,6 +51,14 @@ const App = () => (
 				element={
 					<Layout>
 						<EditMedicine />
+					</Layout>
+				}
+			/>
+			<Route
+				path='/profile'
+				element={
+					<Layout>
+						<Profile />
 					</Layout>
 				}
 			/>

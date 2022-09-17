@@ -3,29 +3,24 @@
 @tailwind utilities;
 
 *:focus {
-  outline: none;
-}
-
-body {
-  font-family: "Roboto", sans-serif;
+	outline: none;
 }
 
 .register-btn {
-  @apply w-24 md:w-36 h-10 bg-[#2F8D76] rounded-xl text-white font-bold text-[1rem] md:text-[1.2rem] mb-[10px] cursor-pointer
+	@apply w-24 md:w-36 h-10 bg-[#2F8D76] rounded-xl text-white font-bold text-[1rem] md:text-[1.2rem] mb-[10px] cursor-pointer;
 }
 
 .custom-scroll-bar::-webkit-scrollbar {
-  width: 5px;
+	width: 5px;
 }
 
 /* Track */
 .custom-scroll-bar::-webkit-scrollbar-track {
-  background: white; 
-}
- 
-/* Handle */
-.custom-scroll-bar::-webkit-scrollbar-thumb {
-  background: #BCBCBC; 
-  border-radius: 10px;
+	background: white;
 }
 
+/* Handle */
+.custom-scroll-bar::-webkit-scrollbar-thumb {
+	background: #bcbcbc;
+	border-radius: 10px;
+}
