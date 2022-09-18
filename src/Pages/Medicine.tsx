@@ -1,6 +1,7 @@
 import React from 'react';
 import { AiOutlinePlus } from 'react-icons/ai';
 import MedTable from '../Components/Table';
+import { Link } from 'react-router-dom';
 
 
 const Medicine = () => {
@@ -23,7 +24,7 @@ const Medicine = () => {
       <div className="mt-5 flex lg:mt-0 lg:ml-4">
 
         <span className="sm:ml-3">
-    
+    	<Link to="/stocks/new">
           <button
             type="button"
             className="inline-flex items-center rounded-md border border-transparent bg-red-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-[#152927] focus:outline-none"
@@ -31,6 +32,7 @@ const Medicine = () => {
             <AiOutlinePlus className="h-5 w-5 flex-shrink-0 text-white" aria-hidden="true" />
             <p className="sm:flex hidden ml-1.5">Add New Item</p>
           </button>
+	</Link>
         </span>
 
       </div>
