@@ -2037,6 +2037,13 @@
   dependencies:
     "@types/react" "*"
 
+"@types/react-table@^7.7.12":
+  "integrity" "sha512-bRUent+NR/WwtDGwI/BqhZ8XnHghwHw0HUKeohzB5xN3K2qKWYE5w19e7GCuOkL1CXD9Gi1HFy7TIm2AvgWUHg=="
+  "resolved" "https://registry.npmjs.org/@types/react-table/-/react-table-7.7.12.tgz"
+  "version" "7.7.12"
+  dependencies:
+    "@types/react" "*"
+
 "@types/react@*", "@types/react@^18.0.15":
   "integrity" "sha512-iz3BtLuIYH1uWdsv6wXYdhozhqj20oD4/Hk2DNXIn1kFsmp9x8d9QB6FnPhfkbhd2PgEONt9Q1x/ebkwjfFLow=="
   "resolved" "https://registry.npmjs.org/@types/react/-/react-18.0.15.tgz"
@@ -7591,7 +7598,12 @@
   optionalDependencies:
     "fsevents" "^2.3.2"
 
-"react@*", "react@^16.8.0 || ^17 || ^18", "react@^18.0.0", "react@^18.2.0", "react@>= 16", "react@>= 16.8 || 18.0.0", "react@>=16.8", "react@>=16.8.0":
+"react-table@^7.8.0":
+  "integrity" "sha512-hNaz4ygkZO4bESeFfnfOft73iBUj8K5oKi1EcSHPAibEydfsX2MyU6Z8KCr3mv3C9Kqqh71U+DhZkFvibbnPbA=="
+  "resolved" "https://registry.npmjs.org/react-table/-/react-table-7.8.0.tgz"
+  "version" "7.8.0"
+
+"react@*", "react@^16.8.0 || ^17 || ^18", "react@^16.8.3 || ^17.0.0-0 || ^18.0.0", "react@^18.0.0", "react@^18.2.0", "react@>= 16", "react@>= 16.8 || 18.0.0", "react@>=16.8", "react@>=16.8.0":
   "integrity" "sha512-/3IjMdb2L9QbBdWiW5e3P2/npwMBaU9mHCSCUzNln0ZCYbcfTsGbTJrU/kGemdH2IWmB2ioZ+zkxtmq6g09fGQ=="
   "resolved" "https://registry.npmjs.org/react/-/react-18.2.0.tgz"
   "version" "18.2.0"
