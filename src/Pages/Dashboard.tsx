@@ -25,6 +25,32 @@ const Card = (props: {
 	);
 };
 
+const SecondaryCard = (props: {
+	heading: string;
+	subheading: string;
+	href: string;
+	mainBody: string;
+	secondaryBody: string;
+}) => {
+	return (
+		<div className='bg-[#FFFFFF] my-[15px] first:mt-0 last:mb-0 md:mt-0 md:last:mb-[15px] rounded-md w-full sm:w-[45%] h-[20vh] border-solid border-[1px] border-[#BEBEBE]'>
+			<div className='flex items-center justify-between h-[5vh] px-[15px]'>
+				<h1 className='text-lg font-bold'>{props.heading}</h1>
+				<p className='text-xs font-extralight'>
+					{props.subheading} {`>>`}
+				</p>
+			</div>
+			<hr color='#BEBEBE' />
+			<div className='h-[14vh] flex items-center justify-between px-[15px]'>
+				<div>
+					<h1 className='text-2xl font-black'>{props.mainBody}</h1>
+					<p className='text-sm font-light'>{props.secondaryBody}</p>
+				</div>
+			</div>
+		</div>
+	);
+};
+
 const Dashboard = () => {
 	return (
 		<div>
@@ -55,6 +81,36 @@ const Dashboard = () => {
 					subTitle='Medicine Available'
 					borderClass='border-[#CEE157]'
 					iconClass='text-[#CEE157]'
+				/>
+			</section>
+			<section className='flex flex-wrap items-center justify-between mt-[15px] lg:mt-[25px]'>
+				<SecondaryCard
+					heading='Heading'
+					subheading='Go to heading'
+					href='/heading'
+					mainBody='1009'
+					secondaryBody='available medicines'
+				/>
+				<SecondaryCard
+					heading='Heading'
+					subheading='Go to heading'
+					href='/heading'
+					mainBody='1009'
+					secondaryBody='available medicines'
+				/>
+				<SecondaryCard
+					heading='Heading'
+					subheading='Go to heading'
+					href='/heading'
+					mainBody='1009'
+					secondaryBody='available medicines'
+				/>
+				<SecondaryCard
+					heading='Heading'
+					subheading='Go to heading'
+					href='/heading'
+					mainBody='1009'
+					secondaryBody='available medicines'
 				/>
 			</section>
 		</div>
