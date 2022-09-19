@@ -1,6 +1,7 @@
 import React, {
 	ChangeEventHandler,
 	FocusEventHandler,
+	FormEventHandler,
 	forwardRef,
 	LegacyRef,
 	RefObject,
@@ -143,6 +144,18 @@ const AddMedicine = () => {
 		};
 		fetchData();
 	}, []);
+
+	const uploadHandler: FormEventHandler = (e) => {
+		e.preventDefault();
+		if (!medicineNameValidator.isInputValid)
+			medicineNameValidator.focusHandler();
+		if (!qtyValidator.isInputValid) qtyValidator.focusHandler();
+		if (!sciNameValidator.isInputValid) sciNameValidator.focusHandler();
+		if (!manufacturerValidator.isInputValid)
+			manufacturerValidator.focusHandler();
+		if (!desctiptionValidator.isInputValid)
+			medicineNameValidator.focusHandler();
+	};
 	return (
 		<div>
 			<section className='mb-[25px]'>
