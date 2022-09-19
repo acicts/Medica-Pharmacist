@@ -9,7 +9,7 @@ import {
 } from 'react-table';
 import { Stocks } from '../../dummyData/stocks';
 import { Button, PageButton } from './Button';
-import { AiOutlineSearch, AiOutlineEdit } from 'react-icons/ai';
+import { AiOutlineSearch, AiOutlineEdit, AiOutlineDelete } from 'react-icons/ai';
 import { DOTS, useCustomPagination } from '../../hooks/useCustomPagination';
 
 export function GlobalFilter({
@@ -47,6 +47,13 @@ export function GlobalFilter({
 	);
 }
 
+export function deleteItem( itemID: number, itemName: string ) {
+	if (window.confirm(`Are you sure, want to delete ${itemName}`)) {
+		// eslint-disable-next-line no-restricted-globals
+		location.reload();
+	}
+}
+
 const Table = ({ placeholder }: { placeholder: string }) => {
 	const data = useMemo<any[]>(() => Stocks(), []);
 
@@ -73,15 +80,29 @@ const Table = ({ placeholder }: { placeholder: string }) => {
 				Header: 'Actions',
 				accessor: 'actions',
 				Cell: (props: any) => (
-					<Link to={/stocks/ + props.row.original.medicineID}>
+
+					<div>
+						<Link to={/stocks/ + props.row.original.medicineID}>
+							<button
+								type='button'
+								className='text-white bg-[#00a57c] transition-colors hover:bg-[#40a321] focus:outline-none rounded-lg px-5 py-2.5 text-center inline-flex items-center mr-2'
+							>
+								<AiOutlineEdit />
+							</button>
+						</Link>
+
 						<button
 							type='button'
-							className='text-white bg-[#00a57c] transition-colors hover:bg-[#40a321] focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center mr-2'
+							className='text-white bg-[#c40b04] transition-colors hover:bg-[#740303] focus:outline-none rounded-lg px-5 py-2.5 text-center inline-flex items-center mr-2'
+							onClick={
+								() => deleteItem(props.row.original.medicineID, props.row.original.medicineName)
+							}
+
 						>
-							<AiOutlineEdit />
-							<p className='ml-1'>Edit</p>
+							<AiOutlineDelete />
 						</button>
-					</Link>
+
+					</div>
 				),
 			},
 		],
@@ -152,7 +173,7 @@ const Table = ({ placeholder }: { placeholder: string }) => {
 												(column) => (
 													<th
 														{...column.getHeaderProps()}
-														className='px-6 py-5 text-left text-20 font-medium text-gray-400 uppercase rounded-sm tracking-wider'
+														className='px-6 py-5 text-left text-20 font-medium text-gray-500 bg-[#ececec] uppercase rounded-sm tracking-wider'
 													>
 														{column.render(
 															'Header'
@@ -175,7 +196,7 @@ const Table = ({ placeholder }: { placeholder: string }) => {
 													return (
 														<td
 															{...cell.getCellProps()}
-															className='px-6 py-10 whitespace-nowrap'
+															className='px-6 py-8 whitespace-nowrap'
 														>
 															{cell.render(
 																'Cell'
