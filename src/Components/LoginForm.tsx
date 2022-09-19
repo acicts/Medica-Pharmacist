@@ -1,5 +1,4 @@
-import { ReactNode, useState } from "react";
-import Dropzone from "react-dropzone";
+import { ReactNode } from "react";
 import { SubmitHandler, useForm, UseFormReturn } from "react-hook-form";
 
 type Inputs = {
