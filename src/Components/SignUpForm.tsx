@@ -7,11 +7,12 @@ type Inputs = {
   email: string;
   ID: string;
   shopName: string;
+  password:string;
 };
 
 interface Props {
   form: UseFormReturn<Inputs, object>;
-  name: "email" | "ID" | "shopName";
+  name: "email" | "ID" | "shopName" | "password";
   children: ReactNode;
   type?: string;
   autofocus?: boolean;
@@ -77,12 +78,43 @@ const ContactSection = (props: {form: UseFormReturn<Inputs>}) => {
     </section>
 }
 
-const VerificationDataSection = () => {
-  return <section>Verification Data</section>
+const VerificationDataSection = (props: {form: UseFormReturn<Inputs>}) => {
+  return <section>
+    <Field form={props.form} name="ID">
+      Pharmacy Pass ID
+    </Field>
+    <div className="w-full">
+      <label htmlFor="upload" className="text-gray-500 text-md text-center lg:text-left w-full">
+        Logo
+      </label>
+      <Dropzone onDrop={console.log}>
+        {({ getRootProps, getInputProps }) => (
+          <section
+            className="aspect-square w-40 border-gray-300 border-2 rounded-xl px-3 text-center items-center flex flex-col justify-center cursor-pointer"
+            {...getRootProps()}
+          >
+            <BsCloudUploadFill className="w-24 h-12" fill="#6c6c6c" />
+            <input
+              {...getInputProps()}
+              accept="image/png, image/jpg, image/jpeg"
+            />
+            {<p className="text-[#6C6C6C] text-[0.8rem]">Upload JPG, JPEG, PNG file</p>}
+          </section>
+        )}
+      </Dropzone>
+    </div>
+  </section>
 }
 
-const CredentialsSection = () => {
-  return <section>Credentials</section>
+const CredentialsSection = (props: {form: UseFormReturn<Inputs>}) => {
+  return <section>
+    <Field form={props.form} name="email" type="email">
+      Email
+    </Field>
+    <Field form={props.form} name="password" type="password">
+      Password
+    </Field>
+  </section>
 }
 
 const SignupForm = () => {
@@ -103,8 +135,8 @@ const SignupForm = () => {
     >
       {section === "a" ? 
         <ContactSection form={form} />: section === "b" ? 
-        <VerificationDataSection /> : 
-        <CredentialsSection /> 
+        <VerificationDataSection form={form}/> : 
+        <CredentialsSection form={form}/> 
       }
       <div className="flex items-end justify-between w-[40px] ml-[5px] mt-[45px] mb-[15px]">
         <div className="w-[8px] h-[8px] rounded-full bg-[#2F8D76]"></div>
