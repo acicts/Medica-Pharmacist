@@ -261,7 +261,7 @@ const AddMedicine = () => {
 								</div>
 							</div>
 						</div>
-						<div className=''>
+						<div className='hidden md:block'>
 							<label className='text-xs'>Image*</label>
 							<Dropzone onDrop={console.log}>
 								{({ getRootProps, getInputProps }) => (
