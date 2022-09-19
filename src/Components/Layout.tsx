@@ -249,6 +249,7 @@ const Layout = (props: { children: ReactElement | ReactElement[] }) => {
 						<a
 							href='https://acicts.lk/'
 							target='_blank'
+							rel='noreferrer'
 							className='underline'
 						>
 							ACICTS
@@ -301,6 +302,7 @@ const Layout = (props: { children: ReactElement | ReactElement[] }) => {
 						<a
 							href='https://acicts.lk/'
 							target='_blank'
+							rel='noreferrer'
 							className='underline'
 						>
 							ACICTS
