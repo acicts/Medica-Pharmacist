@@ -3,6 +3,7 @@ import Layout from './Components/Layout';
 import AddMedicine from './Pages/AddMedicine';
 import Dashboard from './Pages/Dashboard';
 import EditMedicine from './Pages/EditMedicine';
+import EditProfile from './Pages/EditProfile';
 import Login from './Pages/Login';
 import Medicine from './Pages/Medicine';
 import Profile from './Pages/Profile';
@@ -59,6 +60,14 @@ const App = () => (
 				element={
 					<Layout>
 						<Profile />
+					</Layout>
+				}
+			/>
+			<Route
+				path='/profile/edit'
+				element={
+					<Layout>
+						<EditProfile />
 					</Layout>
 				}
 			/>

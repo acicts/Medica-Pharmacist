@@ -167,7 +167,7 @@ const AddMedicine = () => {
 			{loading ? (
 				<div>Loading...</div>
 			) : (
-				<form>
+				<form onSubmit={uploadHandler}>
 					<div className='w-full block md:flex justify-between'>
 						<div className='w-full md:w-[calc(100%_-_250px)]'>
 							<Input

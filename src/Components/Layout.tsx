@@ -233,12 +233,27 @@ const Layout = (props: { children: ReactElement | ReactElement[] }) => {
 					</div>
 				</nav>
 				<div
-					className='h-[90vh] overflow-y-scroll p-[15px]'
+					className='h-[90vh] overflow-y-scroll'
 					onClick={() => {
 						if (isNav) setIsNav(false);
 					}}
 				>
-					{props.children}
+					<div className='w-full min-h-[90vh] p-[15px]'>
+						{props.children}
+					</div>
+
+					<div className='w-full py-[15px] text-center bg-[#D9D9D9] text-xs font-light'>
+						{' '}
+						Copyright &copy; {new Date().getFullYear()} - Pharmacist
+						- Powered by{' '}
+						<a
+							href='www.acicts.lk'
+							target='_blank'
+							className='underline'
+						>
+							ACICTS
+						</a>{' '}
+					</div>
 				</div>
 			</div>
 			<motion.div
@@ -270,12 +285,27 @@ const Layout = (props: { children: ReactElement | ReactElement[] }) => {
 					</div>
 				</nav>
 				<div
-					className='h-[90vh] overflow-y-scroll p-[25px]'
+					className='h-[90vh] overflow-y-scroll'
 					onClick={() => {
 						if (isNav) setIsNav(false);
 					}}
 				>
-					{props.children}
+					<div className='w-full min-h-[90vh] p-[25px]'>
+						{props.children}
+					</div>
+
+					<div className='w-full py-[15px] text-center bg-[#D9D9D9] text-sm font-light'>
+						{' '}
+						Copyright &copy; {new Date().getFullYear()} - Pharmacist
+						- Powered by{' '}
+						<a
+							href='www.acicts.lk'
+							target='_blank'
+							className='underline'
+						>
+							ACICTS
+						</a>{' '}
+					</div>
 				</div>
 			</motion.div>
 		</div>
