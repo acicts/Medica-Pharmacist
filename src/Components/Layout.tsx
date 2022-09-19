@@ -247,7 +247,7 @@ const Layout = (props: { children: ReactElement | ReactElement[] }) => {
 						Copyright &copy; {new Date().getFullYear()} - Pharmacist
 						- Powered by{' '}
 						<a
-							href='www.acicts.lk'
+							href='https://acicts.lk/'
 							target='_blank'
 							className='underline'
 						>
@@ -299,7 +299,7 @@ const Layout = (props: { children: ReactElement | ReactElement[] }) => {
 						Copyright &copy; {new Date().getFullYear()} - Pharmacist
 						- Powered by{' '}
 						<a
-							href='www.acicts.lk'
+							href='https://acicts.lk/'
 							target='_blank'
 							className='underline'
 						>
