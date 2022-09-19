@@ -33,7 +33,7 @@ export function GlobalFilter({
 			<div className='relative w-full sm:w-[350px]'>
 				<input
 					value={value || ''}
-					type='search'
+					type='text'
 					onChange={(e) => {
 						setValue(e.target.value);
 						onChange(e.target.value);
