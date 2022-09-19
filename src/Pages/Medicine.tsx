@@ -1,6 +1,6 @@
 import React from 'react';
 import { AiOutlinePlus } from 'react-icons/ai';
-import MedTable from '../Components/Table';
+import MedTable from '../Components/Medicine/Table';
 import { Link } from 'react-router-dom';
 
 const Medicine = () => {
