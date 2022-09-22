@@ -10,64 +10,51 @@ import {
 const SignupForm = () => {
   const form = useForm<Inputs>();
   const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data);
-  const [section, setSection] = useState<"a" | "b" | "c">("a");
+  const [currSection, secCurrSection] = useState(0);
+  const sections = [0, 1, 2];
 
-  const nextSectionHandler = () => {
-    setSection((curr) => (curr === "a" ? "b" : "c"));
-  };
-  const prevSectionHandler = () => {
-    setSection((curr) => (curr === "c" ? "b" : "a"));
-  };
   return (
     <form
       onSubmit={form.handleSubmit(onSubmit)}
       className="min-h-[70vh] flex flex-col items-start justify-between w-full"
     >
-      {section === "a" ? (
+      {currSection === 0 ? (
         <ContactSection form={form} />
-      ) : section === "b" ? (
+      ) : currSection === 1 ? (
         <VerificationDataSection form={form} />
       ) : (
         <CredentialsSection form={form} />
       )}
       <div className="w-full">
         <div className="flex items-end justify-between w-[40px] ml-[5px] mt-[45px] mb-[15px]">
-          <div
-            className={`w-[8px] h-[8px] transition-colors rounded-full ${
-              section === "a" ? "bg-[#2F8D76]" : "bg-gray-400"
-            }`}
-          ></div>
-          <div
-            className={`w-[8px] h-[8px] transition-colors rounded-full ${
-              section === "b" ? "bg-[#2F8D76]" : "bg-gray-400"
-            }`}
-          ></div>
-          <div
-            className={`w-[8px] h-[8px] transition-colors rounded-full ${
-              section === "c" ? "bg-[#2F8D76]" : "bg-gray-400"
-            }`}
-          ></div>
+          {sections.map((section) => (
+            <div
+              className={`w-[8px] h-[8px] transition-colors rounded-full ${
+                currSection === section ? "bg-[#2F8D76]" : "bg-gray-400"
+              }`}
+            />
+          ))}
         </div>
         <div className="flex items-center justify-between w-52 md:w-80">
-          {(section === "b" || section === "c") && (
+          {currSection !== 0 && (
             <button
               type="button"
-              onClick={prevSectionHandler}
+              onClick={() => secCurrSection(currSection - 1)}
               className="register-btn"
             >
               Back
             </button>
           )}
-          {section === "a" || section === "b" ? (
+          {currSection === 2 ? (
+            <input type="submit" className="register-btn" value="Submit" />
+          ) : (
             <button
-              onClick={nextSectionHandler}
+              onClick={() => secCurrSection(currSection + 1)}
               type="button"
               className="register-btn"
             >
               Next
             </button>
-          ) : (
-            <input type="submit" className="register-btn" value="Submit" />
           )}
         </div>
       </div>

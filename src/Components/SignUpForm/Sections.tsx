@@ -4,17 +4,21 @@ import { BsCloudUploadFill } from "react-icons/bs";
 import { Inputs } from "../../utils/interfaces";
 import Field from "./FormField";
 
-export const ContactSection = (props: { form: UseFormReturn<Inputs> }) => {
+interface Props {
+  form: UseFormReturn<Inputs>;
+}
+
+export const ContactSection = ({ form }: Props) => {
   return (
     <section>
-      <Field form={props.form} name="shopName" autofocus>
+      <Field form={form} name="shopName" autofocus>
         Shop name
       </Field>
 
-      <Field form={props.form} name="address">
+      <Field form={form} name="address">
         Address
       </Field>
-      <Field form={props.form} name="contactNo">
+      <Field form={form} name="contactNo">
         Contact Number
       </Field>
       <div className="w-full">
@@ -48,12 +52,10 @@ export const ContactSection = (props: { form: UseFormReturn<Inputs> }) => {
   );
 };
 
-export const VerificationDataSection = (props: {
-  form: UseFormReturn<Inputs>;
-}) => {
+export const VerificationDataSection = ({ form }: Props) => {
   return (
     <section>
-      <Field form={props.form} name="ID">
+      <Field form={form} name="ID">
         Pharmacy Pass ID
       </Field>
       <div className="w-full">
@@ -87,13 +89,13 @@ export const VerificationDataSection = (props: {
   );
 };
 
-export const CredentialsSection = (props: { form: UseFormReturn<Inputs> }) => {
+export const CredentialsSection = ({ form }: Props) => {
   return (
     <section>
-      <Field form={props.form} name="email" type="email">
+      <Field form={form} name="email" type="email">
         Email
       </Field>
-      <Field form={props.form} name="password" type="password">
+      <Field form={form} name="password" type="password">
         Password
       </Field>
     </section>
