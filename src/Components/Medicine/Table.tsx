@@ -9,7 +9,11 @@ import {
 } from 'react-table';
 import { Stocks } from '../../dummyData/stocks';
 import { Button, PageButton } from './Button';
-import { AiOutlineSearch, AiOutlineEdit, AiOutlineDelete } from 'react-icons/ai';
+import {
+	AiOutlineSearch,
+	AiOutlineEdit,
+	AiOutlineDelete,
+} from 'react-icons/ai';
 import { DOTS, useCustomPagination } from '../../hooks/useCustomPagination';
 
 export function GlobalFilter({
@@ -47,7 +51,7 @@ export function GlobalFilter({
 	);
 }
 
-export function deleteItem( itemID: number, itemName: string ) {
+export function deleteItem(itemID: number, itemName: string) {
 	if (window.confirm(`Are you sure, want to delete ${itemName}`)) {
 		// eslint-disable-next-line no-restricted-globals
 		location.reload();
@@ -80,7 +84,6 @@ const Table = ({ placeholder }: { placeholder: string }) => {
 				Header: 'Actions',
 				accessor: 'actions',
 				Cell: (props: any) => (
-
 					<div>
 						<Link to={/stocks/ + props.row.original.medicineID}>
 							<button
@@ -94,14 +97,15 @@ const Table = ({ placeholder }: { placeholder: string }) => {
 						<button
 							type='button'
 							className='text-white bg-[#c40b04] transition-colors hover:bg-[#740303] focus:outline-none rounded-lg px-5 py-2.5 text-center inline-flex items-center mr-2'
-							onClick={
-								() => deleteItem(props.row.original.medicineID, props.row.original.medicineName)
+							onClick={() =>
+								deleteItem(
+									props.row.original.medicineID,
+									props.row.original.medicineName
+								)
 							}
-
 						>
 							<AiOutlineDelete />
 						</button>
-
 					</div>
 				),
 			},

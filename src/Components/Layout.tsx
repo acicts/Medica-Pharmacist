@@ -31,8 +31,12 @@ const NavigationLink = (props: {
 	);
 };
 
-const Layout = (props: { children: ReactElement | ReactElement[] }) => {
+const Layout = (props: {
+	children: ReactElement | ReactElement[];
+	ignoredRoutes: string[];
+}) => {
 	const [isNav, setIsNav] = useState(false);
+	const location = useLocation().pathname;
 	const animationVariants = {
 		clicked: {
 			x: '0%',
@@ -95,7 +99,7 @@ const Layout = (props: { children: ReactElement | ReactElement[] }) => {
 			},
 		},
 	};
-	return (
+	return !props.ignoredRoutes.find((r) => r === location) ? (
 		<div className='flex items-center h-full justify-between font-poppins'>
 			{/*Mobile Nav bar*/}
 			<motion.div
@@ -311,6 +315,8 @@ const Layout = (props: { children: ReactElement | ReactElement[] }) => {
 				</div>
 			</motion.div>
 		</div>
+	) : (
+		<div>{props.children}</div>
 	);
 };
 
