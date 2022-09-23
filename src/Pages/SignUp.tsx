@@ -3,8 +3,14 @@ import SignUpForm from "../Components/SignUpForm";
 const SignUp = () => (
   <div className="flex w-full items-end justify-between lg:items-center h-[100vh]">
     <div className="custom-scroll-bar md:w-[49.7%] w-full lg:px-[40px] md:px-[20px] sm:px-[10%]  px-[20px] overflow-y-scroll h-[100vh]">
-      <img src="/logo.png" alt="logo" className="md:mt-[45px] md:w-[200px] sm:w-[175px] w-[125px] relative left-[50%] translate-x-[-50%] mt-[25px] md:static md:left-0 md:translate-x-0 md:top-0" />
-      <p className="my-[35px] text-[2rem] font-black  w-full text-left sm:text-center md:text-left text-[#1E1E1E]">Sign Up</p>
+      <img
+        src="/logo.png"
+        alt="logo"
+        className="md:mt-[45px] md:w-[200px] sm:w-[175px] w-[125px] relative left-[50%] translate-x-[-50%] mt-[25px] md:static md:left-0 md:translate-x-0 md:top-0"
+      />
+      <p className="my-[35px] text-[2rem] font-black  w-full text-left sm:text-center md:text-left text-[#1E1E1E]">
+        Sign Up
+      </p>
       <SignUpForm />
     </div>
 
