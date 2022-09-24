@@ -79,6 +79,9 @@ const SignupForm = () => {
 				return authenticationDataValidatos[i].focusHandler();
 			}
 		}
+
+		console.log(logo);
+		console.log(passImg);
 	};
 
 	const sectionIncrementHanlder = () => {
