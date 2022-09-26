@@ -68,6 +68,7 @@ const LoginForm = () => {
 
 	const formSubmitHandler: FormEventHandler = async (e) => {
 		e.preventDefault();
+		setUploading(true);
 		// if (!emailValidator.isInputValid) return emailValidator.focusHandler();
 		// if (!pwdValidator.isInputValid) return pwdValidator.focusHandler();
 		// setUploading(true);
@@ -97,6 +98,7 @@ const LoginForm = () => {
 			'dummyToken',
 			(new Date().getTime() + 172800000).toString()
 		);
+		setUploading(false);
 	};
 	return (
 		<form
