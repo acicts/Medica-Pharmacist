@@ -79,9 +79,9 @@ const SignupForm = () => {
 				return authenticationDataValidatos[i].focusHandler();
 			}
 		}
-
-		console.log(logo);
-		console.log(passImg);
+		const formData: any = new FormData();
+		formData.append('logo', logo);
+		formData.append('pharmacyPassImg', passImg);
 	};
 
 	const sectionIncrementHanlder = () => {
