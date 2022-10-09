@@ -1,4 +1,5 @@
-import React from 'react';
+import React,{useState,useEffect,useContext} from 'react';
+import { authContext } from '../Context/authContext';
 import { RiProfileLine } from 'react-icons/ri';
 import { Link } from 'react-router-dom';
 
@@ -12,6 +13,25 @@ const Field = (props: { term: string; value: string }) => {
 };
 
 const Profile = () => {
+	const [profile,setProfile] = useState()
+	const authCtx = useContext(authContext)
+	useEffect(()=>{
+		async function getData(){
+			const url = `${process.env.REACT_APP_API_ENDPOINT}/profile?token=${authCtx.token}`;
+			const response = await fetch(url, {
+				method: 'GET'
+			});
+
+			const data = await response.json();
+			if (data.success) {
+				alert(data.message);
+				setProfile(data.user)
+			} else {
+				alert(data.message);
+			}
+		}
+		getData()
+	},[])
 	return (
 		<div>
 			<section className='mb-[20px] md:mb-[20px]'>

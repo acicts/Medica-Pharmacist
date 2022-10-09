@@ -1,4 +1,4 @@
-import React, { useMemo, useEffect, useState } from 'react';
+import React, { useMemo, useEffect, useState, useContext} from 'react';
 import { Link } from 'react-router-dom';
 import {
 	useTable,
@@ -15,6 +15,7 @@ import {
 	AiOutlineDelete,
 } from 'react-icons/ai';
 import { DOTS, useCustomPagination } from '../../hooks/useCustomPagination';
+import { authContext } from '../../Context/authContext';
 
 export function GlobalFilter({
 	globalFilter,
@@ -51,15 +52,46 @@ export function GlobalFilter({
 	);
 }
 
-export function deleteItem(itemID: number, itemName: string) {
+export async function deleteItem(itemID: number, itemName: string) {
 	if (window.confirm(`Are you sure, want to delete ${itemName}`)) {
 		// eslint-disable-next-line no-restricted-globals
-		location.reload();
+		// location.reload();
+		const authCtx = useContext(authContext);
+		const url = `${process.env.REACT_APP_API_ENDPOINT}/medicine/${itemID}?token=${authCtx.token}`;
+		const response = await fetch(url, {
+			method: 'DELETE'
+		});
+
+		const data = await response.json();
+		if (data.success) {
+			alert(data.message);
+		} else {
+			alert(data.message);
+		}
 	}
 }
 
 const Table = ({ placeholder }: { placeholder: string }) => {
+	const [medicines,setMedicines] = useState([])
 	const data = useMemo<any[]>(() => Stocks(), []);
+	const authCtx = useContext(authContext);
+	useEffect(()=>{
+		async function getData(){
+			const url = `${process.env.REACT_APP_API_ENDPOINT}/medicine?token=${authCtx.token}`;
+			const response = await fetch(url, {
+				method: 'GET'
+			});
+
+			const data = await response.json();
+			if (data.success) {
+				alert(data.message);
+				setMedicines(data._medicines)
+			} else {
+				alert(data.message);
+			}
+		}
+		getData()
+	},[])
 
 	const columns = useMemo(
 		() => [

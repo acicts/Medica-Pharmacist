@@ -7,10 +7,12 @@ import React, {
 	RefObject,
 	useEffect,
 	useState,
+	useContext
 } from 'react';
 import Dropzone from 'react-dropzone';
 import { BsCloudUploadFill } from 'react-icons/bs';
 import useInput from '../hooks/useInput';
+import { authContext } from '../Context/authContext';
 
 interface inputProps {
 	placeholder: string;
@@ -118,6 +120,8 @@ const TextArea = forwardRef(
 const AddMedicine = () => {
 	const [medicines, setMedicines] = useState([]);
 	const [loading, setLoading] = useState(true);
+	const [image,setImage] = useState([])
+	const authCtx = useContext(authContext);
 	const medicineNameValidator = useInput(
 		(inputVal) => inputVal.trim().length > 0
 	);
@@ -145,7 +149,7 @@ const AddMedicine = () => {
 		fetchData();
 	}, []);
 
-	const uploadHandler: FormEventHandler = (e) => {
+	const uploadHandler: FormEventHandler = async (e) => {
 		e.preventDefault();
 		if (!medicineNameValidator.isInputValid)
 			medicineNameValidator.focusHandler();
@@ -155,6 +159,38 @@ const AddMedicine = () => {
 			manufacturerValidator.focusHandler();
 		if (!desctiptionValidator.isInputValid)
 			medicineNameValidator.focusHandler();
+		const medicineName = medicineNameValidator.inputValue
+		const quantity = qtyValidator.inputValue
+		const scientificName = sciNameValidator.inputValue
+		const manufacturer = manufacturerValidator.inputValue
+		const description = desctiptionValidator.inputValue
+
+		const formData: any = new FormData();
+		formData.append('name', medicineName);
+		formData.append('manufacturer', manufacturer);
+		formData.append('description', description);
+		formData.append('stock', quantity);
+		formData.append('image', image);
+		formData.append('chemicalName', scientificName);
+
+		const url = `${process.env.REACT_APP_API_ENDPOINT}/medicine?token=${authCtx.token}`;
+
+		const response = await fetch(url, {
+			method: 'POST',
+			body:formData,
+			headers: {
+				'Content-Type': 'x-www-form-urlencoded',
+			},
+		});
+
+		const data = await response.json();
+		if (data.success) {
+			alert(data.message);
+		} else {
+			alert(data.message);
+		}
+
+		// console.log(medicineName,quantity,scientificName,manufacturer,description,image)
 	};
 	return (
 		<div>

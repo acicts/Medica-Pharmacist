@@ -1,13 +1,17 @@
 import React, {
 	ChangeEventHandler,
 	FocusEventHandler,
+	FormEventHandler,
 	forwardRef,
 	LegacyRef,
 	RefObject,
 	useEffect,
 	useState,
+	useContext
 } from 'react';
+import {useParams} from 'react-router-dom'
 import useInput from '../hooks/useInput';
+import { authContext } from '../Context/authContext';
 interface inputProps {
 	placeholder: string;
 	type: string;
@@ -117,6 +121,10 @@ const EditProfile = () => {
 	const [medicines, setMedicines] = useState([]);
 	const [qty, setQty] = useState(0);
 	const [loading, setLoading] = useState(true);
+	const [image,setImage] = useState([])
+	const [currentMedicine,setCurrentMedicine] = useState()
+	const authCtx = useContext(authContext);
+	const params = useParams()
 	const medicineNameValidator = useInput(
 		(inputVal) => inputVal.trim().length > 0
 	);
@@ -140,6 +148,67 @@ const EditProfile = () => {
 		};
 		fetchData();
 	}, []);
+
+	useEffect(()=>{
+		async function fetchData(){
+			const url = `${process.env.REACT_APP_API_ENDPOINT}/medicine/${params.id}?token=${authCtx.token}`;
+			const response = await fetch(url, {
+				method: 'GET'
+			});
+
+			const data = await response.json();
+			if (data.success) {
+				alert(data.message);
+				setCurrentMedicine(data._medicine)
+			} else {
+				alert(data.message);
+			}
+		}
+		fetchData()
+	})
+
+	const handleSubmit:FormEventHandler = async(e)=>{
+		e.preventDefault();
+		if (!medicineNameValidator.isInputValid)
+			medicineNameValidator.focusHandler();
+		if (!sciNameValidator.isInputValid) sciNameValidator.focusHandler();
+		if (!manufacturerValidator.isInputValid)
+			manufacturerValidator.focusHandler();
+		if (!desctiptionValidator.isInputValid)
+			medicineNameValidator.focusHandler();
+		const medicineName = medicineNameValidator.inputValue
+		const quantity = qty
+		const scientificName = sciNameValidator.inputValue
+		const manufacturer = manufacturerValidator.inputValue
+		const description = desctiptionValidator.inputValue
+		//const medicineId = params.id
+
+		const formData: any = new FormData();
+		formData.append('name', medicineName);
+		formData.append('manufacturer', manufacturer);
+		formData.append('description', description);
+		formData.append('stock', quantity);
+		formData.append('image', image);
+		formData.append('chemicalName', scientificName);
+
+		//const url = `${process.env.REACT_APP_API_ENDPOINT}/medicine/?token=${authCtx.token}`;
+
+		// const response = await fetch(url, {
+		// 	method: 'POST',
+		// 	body:formData,
+		// 	headers: {
+		// 		'Content-Type': 'x-www-form-urlencoded',
+		// 	},
+		// });
+
+		// const data = await response.json();
+		// if (data.success) {
+		// 	alert(data.message);
+		// } else {
+		// 	alert(data.message);
+		// }
+	}
+
 	return (
 		<div>
 			<section className='mb-[15px] md:mb-[30px]'>
@@ -147,7 +216,7 @@ const EditProfile = () => {
 				<p className='text-xs'>Edit your profile Information</p>
 			</section>
 			<section className='w-full rounded-md border-[1px] border-solid border-[#6C6C6C] bg-[#FFFF] p-[15px]'>
-				<form className='w-full flex items-start justify-between flex-col md:flex-row'>
+				<form className='w-full flex items-start justify-between flex-col md:flex-row' onSubmit={handleSubmit}>
 					<div className='w-full flex items-start justify-between mb-[15px] sm:flex-col md:w-min'>
 						<span className='font-bold text-[#5E5E5E]'>Logo</span>
 						<label
@@ -165,7 +234,7 @@ const EditProfile = () => {
 								Upload Image
 							</p>
 						</label>
-						<input type='file' id='profilePic' className='hidden' />
+						<input type='file' id='profilePic' className='hidden' onChange={(e:any)=>setImage(e.target.files[0])}/>
 					</div>
 					<div className='w-full md:w-[60%]'>
 						<span className='font-bold text-[#5E5E5E] mb-[15px]'>

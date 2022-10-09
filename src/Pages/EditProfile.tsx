@@ -4,8 +4,13 @@ import React, {
 	forwardRef,
 	LegacyRef,
 	RefObject,
+	useState,
+	useContext,
+	useEffect,
+	FormEventHandler
 } from 'react';
 import useInput from '../hooks/useInput';
+import {authContext} from '../Context/authContext'
 interface inputProps {
 	placeholder: string;
 	type: string;
@@ -40,6 +45,9 @@ const Input = forwardRef(
 );
 
 const EditProfile = () => {
+	const [currentUser,setCurrentUser] = useState()
+	const [image,setImage] = useState([])
+	const authCtx = useContext(authContext);
 	const pharmacyNameValidator = useInput(
 		(inputVal) => inputVal.trim().length > 0
 	);
@@ -48,6 +56,54 @@ const EditProfile = () => {
 	);
 	const noValidator = useInput((inputVal) => inputVal.trim().length > 10);
 	const addressValidator = useInput((inputVal) => inputVal.trim().length > 0);
+	useEffect(()=>{
+		async function fetchData(){
+			const url = `${process.env.REACT_APP_API_ENDPOINT}/profile?token=${authCtx.token}`;
+			const response = await fetch(url, {
+				method: 'GET'
+			});
+
+			const data = await response.json();
+			if (data.success) {
+				alert(data.message);
+				setCurrentUser(data.user)
+			} else {
+				alert(data.message);
+			}
+		}
+		fetchData()
+	})
+	const handleSubmit:FormEventHandler = async(e)=>{
+		e.preventDefault();
+		const pharmacyName = pharmacyNameValidator.inputValue
+		const email = emailValidator.inputValue
+		const contactNo = noValidator.inputValue
+		const address = addressValidator.inputValue
+
+		const formData: any = new FormData();
+		formData.append('shopName', pharmacyName);
+		formData.append('email', email);
+		formData.append('contactNo', contactNo);
+		formData.append('address', address);
+		formData.append('image', image);
+
+		//const url = `${process.env.REACT_APP_API_ENDPOINT}/profile?token=${authCtx.token}`;
+
+		// const response = await fetch(url, {
+		// 	method: 'POST',
+		// 	body:formData,
+		// 	headers: {
+		// 		'Content-Type': 'x-www-form-urlencoded',
+		// 	},
+		// });
+
+		// const data = await response.json();
+		// if (data.success) {
+		// 	alert(data.message);
+		// } else {
+		// 	alert(data.message);
+		// }
+	}
 	return (
 		<div>
 			<section className='mb-[15px] md:mb-[30px]'>
@@ -55,7 +111,7 @@ const EditProfile = () => {
 				<p className='text-xs'>Edit your profile Information</p>
 			</section>
 			<section className='w-full rounded-md border-[1px] border-solid border-[#6C6C6C] bg-[#FFFF] p-[15px]'>
-				<form className='w-full flex items-start justify-between flex-col md:flex-row'>
+				<form className='w-full flex items-start justify-between flex-col md:flex-row' onSubmit={handleSubmit}>
 					<div className='w-full flex items-start justify-between mb-[15px] sm:flex-col md:w-min'>
 						<span className='font-bold text-[#5E5E5E]'>Logo</span>
 						<label
@@ -73,7 +129,7 @@ const EditProfile = () => {
 								Upload Image
 							</p>
 						</label>
-						<input type='file' id='profilePic' className='hidden' />
+						<input type='file' id='profilePic' className='hidden' onChange={(e:any)=>setImage(e.target.files[0])} />
 					</div>
 					<div className='w-full md:w-[60%]'>
 						<span className='font-bold text-[#5E5E5E] mb-[15px]'>
