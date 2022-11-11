@@ -1,3 +1,4 @@
+import axios from 'axios';
 import {
 	ChangeEventHandler,
 	FocusEventHandler,
@@ -68,37 +69,29 @@ const LoginForm = () => {
 
 	const formSubmitHandler: FormEventHandler = async (e) => {
 		e.preventDefault();
+		if (!emailValidator.isInputValid) return emailValidator.focusHandler();
+		if (!pwdValidator.isInputValid) return pwdValidator.focusHandler();
 		setUploading(true);
-		// if (!emailValidator.isInputValid) return emailValidator.focusHandler();
-		// if (!pwdValidator.isInputValid) return pwdValidator.focusHandler();
-		// setUploading(true);
-		// const body = JSON.stringify({
-		// 	email: emailValidator.inputValue,
-		// 	password: pwdValidator.inputValue,
-		// });
+		const body = JSON.stringify({
+			email: emailValidator.inputValue,
+			password: pwdValidator.inputValue,
+		});
 
-		// const url = `${process.env.REACT_APP_API_ENDPOINT}/pharmacist/login`;
+		const url = `${process.env.REACT_APP_API_ENDPOINT}/pharmacist/login`;
 
-		// const response = await fetch(url, {
-		// 	method: 'POST',
-		// 	body,
-		// 	headers: {
-		// 		'Content-Type': 'application/json',
-		// 	},
-		// });
+		axios
+			.post(url, body, {
+				headers: { 'Content-Type': 'application/json' },
+			})
+			.then((response) => {
+				console.log(response);
+				if (response.data.success) {
+					authCtx.login(response.data.token, response.data.expiresIn);
+				}
 
-		// const data = await response.json();
-		// setUploading(false);
-		// if (data.success) {
-		// 	authCtx.login(data.token, data.expiresIn);
-		// } else {
-		// 	alert(data.message);
-		// }
-		authCtx.login(
-			'dummyToken',
-			(new Date().getTime() + 172800000).toString()
-		);
-		setUploading(false);
+				setUploading(false);
+			})
+			.catch(console.log);
 	};
 	return (
 		<form

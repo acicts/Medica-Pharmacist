@@ -1,10 +1,16 @@
+import axios from 'axios';
 import React, {
 	ChangeEventHandler,
 	FocusEventHandler,
 	forwardRef,
 	LegacyRef,
 	RefObject,
+	useCallback,
+	useContext,
+	useEffect,
+	useState,
 } from 'react';
+import { authContext } from '../Context/authContext';
 import useInput from '../hooks/useInput';
 interface inputProps {
 	placeholder: string;
@@ -48,7 +54,26 @@ const EditProfile = () => {
 	);
 	const noValidator = useInput((inputVal) => inputVal.trim().length > 10);
 	const addressValidator = useInput((inputVal) => inputVal.trim().length > 0);
-	return (
+
+	const [loading, setLoading] = useState(false);
+	const authCtx = useContext(authContext);
+	const fetchData = useCallback(() => {
+		setLoading(true);
+		const url = `${process.env.REACT_APP_API_ENDPOINT}/pharmacist/profile?token=${authCtx.token}`;
+		axios
+			.get(url)
+			.then((response) => {
+				console.log(response);
+				setLoading(false);
+			})
+			.catch(console.log);
+	}, [authCtx.token]);
+	useEffect(() => {
+		fetchData();
+	}, [fetchData]);
+	return loading ? (
+		<h1>Loading...</h1>
+	) : (
 		<div>
 			<section className='mb-[15px] md:mb-[30px]'>
 				<h1 className='text-2xl font-bold'>Edit Profile</h1>

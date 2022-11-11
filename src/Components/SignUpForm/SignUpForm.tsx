@@ -6,6 +6,7 @@ import {
 	CredentialsSection,
 	VerificationDataSection,
 } from './Sections';
+import axios from 'axios';
 
 const SignupForm = () => {
 	const [currSection, setCurrSection] = useState(0);
@@ -45,7 +46,7 @@ const SignupForm = () => {
 		{
 			...useInput((inputVal) => inputVal.trim().length > 0),
 			errorMsg: 'Enter a valid ID',
-			id: 'pharmacyId',
+			id: 'pharmacyPassId',
 			type: 'text',
 			label: 'Pharmacy ID',
 		},
@@ -82,6 +83,26 @@ const SignupForm = () => {
 		const formData: any = new FormData();
 		formData.append('logo', logo);
 		formData.append('pharmacyPassImg', passImg);
+
+		contactValidators.forEach((validator) => {
+			formData.append(validator.id, validator.inputValue);
+		});
+
+		authenticationDataValidatos.forEach((validator) => {
+			formData.append(validator.id, validator.inputValue);
+		});
+
+		verificationDataValidators.forEach((validator) => {
+			formData.append(validator.id, validator.inputValue);
+		});
+		const url = `${process.env.REACT_APP_API_ENDPOINT}/pharmacist/register`;
+		console.log(url);
+		axios
+			.post(url, formData)
+			.then((response) => {
+				console.log(response);
+			})
+			.catch(console.log);
 	};
 
 	const sectionIncrementHanlder = () => {
