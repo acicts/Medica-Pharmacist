@@ -12,6 +12,9 @@ import React, {
 } from 'react';
 import { authContext } from '../Context/authContext';
 import useInput from '../hooks/useInput';
+
+let rendered = false;
+
 interface inputProps {
 	placeholder: string;
 	type: string;
@@ -54,23 +57,52 @@ const EditProfile = () => {
 	);
 	const noValidator = useInput((inputVal) => inputVal.trim().length > 10);
 	const addressValidator = useInput((inputVal) => inputVal.trim().length > 0);
-
+	const [image, setImage] = useState('');
 	const [loading, setLoading] = useState(false);
 	const authCtx = useContext(authContext);
 	const fetchData = useCallback(() => {
+		if (rendered) return;
 		setLoading(true);
 		const url = `${process.env.REACT_APP_API_ENDPOINT}/pharmacist/profile?token=${authCtx.token}`;
 		axios
 			.get(url)
 			.then((response) => {
 				console.log(response);
+				pharmacyNameValidator.setInputValue(
+					response.data.user.shopName
+				);
+				emailValidator.setInputValue(response.data.user.email.address);
+				noValidator.setInputValue(response.data.user.contact.phoneNo);
+				addressValidator.setInputValue(
+					response.data.user.contact.address
+				);
+				setImage(response.data.user.logo.link);
+				rendered = true;
 				setLoading(false);
 			})
 			.catch(console.log);
-	}, [authCtx.token]);
+	}, [
+		authCtx.token,
+		addressValidator,
+		emailValidator,
+		noValidator,
+		pharmacyNameValidator,
+	]);
 	useEffect(() => {
 		fetchData();
 	}, [fetchData]);
+
+	const updateImageHandler: ChangeEventHandler<HTMLInputElement> = (e) => {
+		console.log('Triggered...');
+		const url = `${process.env.REACT_APP_API_ENDPOINT}/pharmacist/profile/image?token=${authCtx.token}`;
+		const formData = new FormData();
+		formData.append('profilePic', e.target.files![0]);
+
+		axios.put(url, formData).then((response) => {
+			console.log(response);
+		});
+	};
+
 	return loading ? (
 		<h1>Loading...</h1>
 	) : (
@@ -87,8 +119,7 @@ const EditProfile = () => {
 							className='w-[125px] h-[125px] sm:w-[175px] sm:h-[175px] rounded-md relative'
 							htmlFor='profilePic'
 							style={{
-								backgroundImage:
-									'url(https://img.freepik.com/premium-vector/pharmacy-logo-vector_23987-171.jpg)',
+								backgroundImage: `url(${image})`,
 								backgroundSize: 'cover',
 								backgroundPosition: 'center',
 								backgroundRepeat: 'no-repeat',
@@ -98,7 +129,12 @@ const EditProfile = () => {
 								Upload Image
 							</p>
 						</label>
-						<input type='file' id='profilePic' className='hidden' />
+						<input
+							type='file'
+							id='profilePic'
+							className='hidden'
+							onChange={updateImageHandler}
+						/>
 					</div>
 					<div className='w-full md:w-[60%]'>
 						<span className='font-bold text-[#5E5E5E] mb-[15px]'>
