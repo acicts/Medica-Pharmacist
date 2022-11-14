@@ -14,9 +14,8 @@ const NavigationLink = (props: {
 	const location = useLocation().pathname;
 	return (
 		<li
-			className={`w-full my-[10px] py-[10px] last:mb-0 first:mt-0 ${
-				location === props.href ? 'bg-[#2F8D76]' : ''
-			} transition-all`}
+			className={`w-full my-[10px] py-[10px] last:mb-0 first:mt-0 ${location === props.href ? 'bg-[#2F8D76]' : ''
+				} transition-all`}
 		>
 			<NavLink
 				to={props.href}
@@ -99,7 +98,7 @@ const Layout = (props: {
 			},
 		},
 	};
-	return !props.ignoredRoutes.find((r) => r === location) ? (
+	return !props.ignoredRoutes.find((r) => r === location || r.startsWith(location)) ? (
 		<div className='flex items-center h-full justify-between font-poppins'>
 			{/*Mobile Nav bar*/}
 			<motion.div

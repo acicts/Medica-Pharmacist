@@ -37,7 +37,7 @@ const CheckAuthenticated = (props: {
 
 const App = () => (
 	<>
-		<Layout ignoredRoutes={['/login', '/signup']}>
+		<Layout ignoredRoutes={['/login', '/signup', '/verify/:token']}>
 			<Suspense fallback={<Loading />}>
 				<Routes>
 					<Route

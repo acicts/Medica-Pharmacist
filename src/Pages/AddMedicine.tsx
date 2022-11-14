@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React, {
 	ChangeEventHandler,
 	FocusEventHandler,
@@ -5,11 +6,13 @@ import React, {
 	forwardRef,
 	LegacyRef,
 	RefObject,
+	useContext,
 	useEffect,
 	useState,
 } from 'react';
 import Dropzone from 'react-dropzone';
 import { BsCloudUploadFill } from 'react-icons/bs';
+import { authContext } from '../Context/authContext';
 import useInput from '../hooks/useInput';
 
 interface inputProps {
@@ -118,6 +121,7 @@ const TextArea = forwardRef(
 const AddMedicine = () => {
 	const [medicines, setMedicines] = useState([]);
 	const [loading, setLoading] = useState(true);
+	const authCtx = useContext(authContext)
 	const medicineNameValidator = useInput(
 		(inputVal) => inputVal.trim().length > 0
 	);
@@ -132,6 +136,7 @@ const AddMedicine = () => {
 			inputVal.trim().length > 0 && inputVal !== '-- Scientific Names --'
 	);
 	const desctiptionValidator = useInput(() => true);
+	const [image, setImage] = useState<File>();
 	useEffect(() => {
 		const fetchData = async () => {
 			setLoading(true);
@@ -155,6 +160,23 @@ const AddMedicine = () => {
 			manufacturerValidator.focusHandler();
 		if (!desctiptionValidator.isInputValid)
 			medicineNameValidator.focusHandler();
+
+
+
+		const formData = new FormData();
+		console.log(image)
+		formData.append('manufacturer', manufacturerValidator.inputValue);
+		formData.append('name', medicineNameValidator.inputValue);
+		formData.append('description', desctiptionValidator.inputValue);
+		formData.append('stock', qtyValidator.inputValue);
+		formData.append('chemicalName', sciNameValidator.inputValue);
+		formData.append('image', image as Blob);
+
+		const url = `${process.env.REACT_APP_API_ENDPOINT}/pharmacist/medicine?token=${authCtx.token}`
+
+		axios.post(url, formData).then((response) => {
+			console.log(response)
+		})
 	};
 	return (
 		<div>
@@ -236,7 +258,7 @@ const AddMedicine = () => {
 							/>
 							<div className='mb-[15px] md:hidden'>
 								<label className='text-xs'>Image*</label>
-								<Dropzone onDrop={console.log}>
+								<Dropzone onDrop={(files) => { setImage(files[0]) }}>
 									{({ getRootProps, getInputProps }) => (
 										<section
 											className='w-full h-max py-[10px] md:aspect-square border-gray-300 border-2 rounded-sm px-3 text-center items-center flex flex-col justify-center cursor-pointer'
@@ -276,7 +298,7 @@ const AddMedicine = () => {
 						</div>
 						<div className='hidden md:block'>
 							<label className='text-xs'>Image*</label>
-							<Dropzone onDrop={console.log}>
+							<Dropzone onDrop={(files) => { setImage(files[0]) }}>
 								{({ getRootProps, getInputProps }) => (
 									<section
 										className='w-[175px] h-max py-[10px] md:aspect-square border-gray-300 border-2 rounded-sm px-3 text-center items-center flex flex-col justify-center cursor-pointer'

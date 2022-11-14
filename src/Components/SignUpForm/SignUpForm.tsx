@@ -83,6 +83,7 @@ const SignupForm = () => {
 		const formData: any = new FormData();
 		formData.append('logo', logo);
 		formData.append('pharmacyPassImg', passImg);
+		formData.append('host', window.location.origin)
 
 		contactValidators.forEach((validator) => {
 			formData.append(validator.id, validator.inputValue);
@@ -144,11 +145,10 @@ const SignupForm = () => {
 				<div className='flex items-end justify-between w-[40px] ml-[5px] mt-[45px] mb-[15px]'>
 					{sections.map((section) => (
 						<div
-							className={`w-[8px] h-[8px] transition-colors rounded-full ${
-								currSection === section
-									? 'bg-[#2F8D76]'
-									: 'bg-gray-400'
-							}`}
+							className={`w-[8px] h-[8px] transition-colors rounded-full ${currSection === section
+								? 'bg-[#2F8D76]'
+								: 'bg-gray-400'
+								}`}
 						/>
 					))}
 				</div>
