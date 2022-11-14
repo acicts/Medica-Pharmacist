@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, {
 	ChangeEventHandler,
 	FocusEventHandler,
+	FormEventHandler,
 	forwardRef,
 	LegacyRef,
 	RefObject,
@@ -10,10 +11,11 @@ import React, {
 	useEffect,
 	useState,
 } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { authContext } from '../Context/authContext';
 import useInput from '../hooks/useInput';
 
-let rendered = false;
+
 
 interface inputProps {
 	placeholder: string;
@@ -55,13 +57,15 @@ const EditProfile = () => {
 	const emailValidator = useInput(
 		(inputVal) => inputVal.trim().length > 0 && inputVal.includes('@')
 	);
-	const noValidator = useInput((inputVal) => inputVal.trim().length > 10);
+	const noValidator = useInput((inputVal) => inputVal.trim().length === 10);
 	const addressValidator = useInput((inputVal) => inputVal.trim().length > 0);
 	const [image, setImage] = useState('');
 	const [loading, setLoading] = useState(false);
 	const authCtx = useContext(authContext);
+
+	const navigate = useNavigate();
+
 	const fetchData = useCallback(() => {
-		if (rendered) return;
 		setLoading(true);
 		const url = `${process.env.REACT_APP_API_ENDPOINT}/pharmacist/profile?token=${authCtx.token}`;
 		axios
@@ -77,16 +81,11 @@ const EditProfile = () => {
 					response.data.user.contact.address
 				);
 				setImage(response.data.user.logo.link);
-				rendered = true;
 				setLoading(false);
 			})
 			.catch(console.log);
 	}, [
 		authCtx.token,
-		addressValidator,
-		emailValidator,
-		noValidator,
-		pharmacyNameValidator,
 	]);
 	useEffect(() => {
 		fetchData();
@@ -94,14 +93,40 @@ const EditProfile = () => {
 
 	const updateImageHandler: ChangeEventHandler<HTMLInputElement> = (e) => {
 		console.log('Triggered...');
+		console.log(e.target.files);
 		const url = `${process.env.REACT_APP_API_ENDPOINT}/pharmacist/profile/image?token=${authCtx.token}`;
 		const formData = new FormData();
 		formData.append('profilePic', e.target.files![0]);
 
 		axios.put(url, formData).then((response) => {
-			console.log(response);
-		});
+			const data = response.data;
+			if (data.success){
+				setImage(data.link)
+			}
+		}).catch(console.log)
 	};
+
+	const updateProfileHandler: FormEventHandler<HTMLFormElement> = (e) => {
+		e.preventDefault();
+		const url = `${process.env.REACT_APP_API_ENDPOINT}/pharmacist/profile?token=${authCtx.token}`;
+		const body = JSON.stringify({
+			email: {
+				address: emailValidator.inputValue
+			},
+			contact: {
+				address: addressValidator.inputValue,
+				phoneNo: noValidator.inputValue
+			},
+			shopName: pharmacyNameValidator.inputValue
+		});
+		axios.put(url, body, {
+			headers: {
+				'Content-Type': 'application/json'
+			}
+		}).then((response) => {
+			console.log(response)
+		}).catch(console.log)
+	}
 
 	return loading ? (
 		<h1>Loading...</h1>
@@ -112,7 +137,7 @@ const EditProfile = () => {
 				<p className='text-xs'>Edit your profile Information</p>
 			</section>
 			<section className='w-full rounded-md border-[1px] border-solid border-[#6C6C6C] bg-[#FFFF] p-[15px]'>
-				<form className='w-full flex items-start justify-between flex-col md:flex-row'>
+				<form className='w-full flex items-start justify-between flex-col md:flex-row' onSubmit={updateProfileHandler}>
 					<div className='w-full flex items-start justify-between mb-[15px] sm:flex-col md:w-min'>
 						<span className='font-bold text-[#5E5E5E]'>Logo</span>
 						<label
@@ -198,7 +223,7 @@ const EditProfile = () => {
 								>
 									Save
 								</button>
-								<button className='text-center w-[100px] p-[5px] border-md bg-gray-300'>
+								<button className='text-center w-[100px] p-[5px] border-md bg-gray-300' onClick={() => {navigate(-1)}}>
 									Cancel
 								</button>
 							</div>
