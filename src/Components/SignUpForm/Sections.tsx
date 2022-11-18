@@ -3,13 +3,33 @@ import Dropzone from 'react-dropzone';
 import { BsCloudUploadFill } from 'react-icons/bs';
 import Field from './FormField';
 
+const getBase64 = (file: File | undefined, cb: any) => {
+	if (!file) return cb('');
+	let reader = new FileReader()
+	reader.readAsDataURL(file!)
+	reader.onload = () => {
+		cb(reader.result)
+	};
+	reader.onerror = function (error) {
+		cb(error)
+	}
+
+}
+
 export const ContactSection = ({
 	validators,
 	setLogo,
+	logo,
+	setLogoURL,
+	logoURL
 }: {
 	validators: Array<any>;
 	setLogo: Dispatch<SetStateAction<File | undefined>>;
+	logo: File | undefined
+	setLogoURL: Dispatch<SetStateAction<string | undefined>>;
+	logoURL: string | undefined
 }) => {
+
 	return (
 		<section>
 			{validators.map((validator) => {
@@ -34,11 +54,21 @@ export const ContactSection = ({
 				>
 					Logo
 				</label>
-				<Dropzone onDrop={(files) => setLogo(files[0])}>
+				<Dropzone onDrop={(files) => {
+					setLogo(files[0]); getBase64(files[0], (path: any) => {
+						setLogoURL(path)
+					})
+				}} >
 					{({ getRootProps, getInputProps }) => (
 						<section
-							className='aspect-square w-40 border-gray-300 border-2 rounded-xl px-3 text-center items-center flex flex-col justify-center cursor-pointer'
+							className="aspect-square w-40 border-gray-300 border-2 rounded-xl px-3 text-center items-center flex flex-col justify-center cursor-pointer relative before:content-[''] before:absolute before:w-40 before:aspect-square before:bg-white before:bg-opacity-70 before:rounded-xl"
 							{...getRootProps()}
+							style={{
+								backgroundPosition: 'center',
+								backgroundSize: 'cover',
+								backgroundRepeat: 'no-repeat',
+								backgroundImage: `url(${logoURL})`
+							}}
 						>
 							<BsCloudUploadFill
 								className='w-24 h-12'
@@ -64,9 +94,15 @@ export const ContactSection = ({
 export const VerificationDataSection = ({
 	validators,
 	setPassImg,
+	passImg,
+	setPassImgURL,
+	passImgURL
 }: {
 	validators: Array<any>;
 	setPassImg: Dispatch<SetStateAction<File | undefined>>;
+	passImg: File | undefined
+	setPassImgURL: Dispatch<SetStateAction<string | undefined>>;
+	passImgURL: string | undefined
 }) => {
 	return (
 		<section>
@@ -92,11 +128,21 @@ export const VerificationDataSection = ({
 				>
 					Photo of the Pharmacy Pass
 				</label>
-				<Dropzone onDrop={(files) => setPassImg(files[0])}>
+				<Dropzone onDrop={(files) => {
+					setPassImg(files[0]); getBase64(files[0], (path: any) => {
+						setPassImgURL(path)
+					})
+				}}>
 					{({ getRootProps, getInputProps }) => (
 						<section
-							className='aspect-square w-40 border-gray-300 border-2 rounded-xl px-3 text-center items-center flex flex-col justify-center cursor-pointer'
+							className="aspect-square w-40 border-gray-300 border-2 rounded-xl px-3 text-center items-center flex flex-col justify-center cursor-pointer relative before:content-[''] before:absolute before:w-40 before:aspect-square before:bg-white before:bg-opacity-70 before:rounded-xl"
 							{...getRootProps()}
+							style={{
+								backgroundPosition: 'center',
+								backgroundSize: 'cover',
+								backgroundRepeat: 'no-repeat',
+								backgroundImage: `url(${passImgURL})`
+							}}
 						>
 							<BsCloudUploadFill
 								className='w-24 h-12'

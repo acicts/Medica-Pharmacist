@@ -11,6 +11,7 @@ import React, {
 	useEffect,
 	useState,
 } from 'react';
+import { Bars, Circles } from 'react-loader-spinner';
 import { useNavigate } from 'react-router-dom';
 import { authContext } from '../Context/authContext';
 import useInput from '../hooks/useInput';
@@ -63,6 +64,9 @@ const EditProfile = () => {
 	const [loading, setLoading] = useState(false);
 	const authCtx = useContext(authContext);
 
+	const [imageUploading, setImageUploading] = useState(false)
+	const [uploading, setUploading] = useState(false)
+
 	const navigate = useNavigate();
 
 	const fetchData = useCallback(() => {
@@ -92,27 +96,25 @@ const EditProfile = () => {
 	}, [fetchData]);
 
 	const updateImageHandler: ChangeEventHandler<HTMLInputElement> = (e) => {
-		console.log('Triggered...');
-		console.log(e.target.files);
+		setImageUploading(true)
 		const url = `${process.env.REACT_APP_API_ENDPOINT}/pharmacist/profile/image?token=${authCtx.token}`;
 		const formData = new FormData();
 		formData.append('profilePic', e.target.files![0]);
 
 		axios.put(url, formData).then((response) => {
 			const data = response.data;
-			if (data.success){
+			if (data.success) {
 				setImage(data.link)
 			}
+			setImageUploading(false)
 		}).catch(console.log)
 	};
 
 	const updateProfileHandler: FormEventHandler<HTMLFormElement> = (e) => {
 		e.preventDefault();
+		setUploading(true)
 		const url = `${process.env.REACT_APP_API_ENDPOINT}/pharmacist/profile?token=${authCtx.token}`;
 		const body = JSON.stringify({
-			email: {
-				address: emailValidator.inputValue
-			},
 			contact: {
 				address: addressValidator.inputValue,
 				phoneNo: noValidator.inputValue
@@ -125,6 +127,7 @@ const EditProfile = () => {
 			}
 		}).then((response) => {
 			console.log(response)
+			setUploading(false)
 		}).catch(console.log)
 	}
 
@@ -141,7 +144,7 @@ const EditProfile = () => {
 					<div className='w-full flex items-start justify-between mb-[15px] sm:flex-col md:w-min'>
 						<span className='font-bold text-[#5E5E5E]'>Logo</span>
 						<label
-							className='w-[125px] h-[125px] sm:w-[175px] sm:h-[175px] rounded-md relative'
+							className='w-[125px] h-[125px] cursor-pointer sm:w-[175px] sm:h-[175px] rounded-md relative'
 							htmlFor='profilePic'
 							style={{
 								backgroundImage: `url(${image})`,
@@ -150,9 +153,20 @@ const EditProfile = () => {
 								backgroundRepeat: 'no-repeat',
 							}}
 						>
-							<p className='bg-black text-sm bg-opacity-30 text-white rounded-b-md  w-full py-[5px] text-center absolute bottom-0 left-0'>
-								Upload Image
-							</p>
+							<div className='bg-black text-sm bg-opacity-30 text-white rounded-b-md  w-full py-[5px] text-center absolute bottom-0 left-0'>
+								{imageUploading ? <Bars
+									height="20"
+									width="20"
+									color="#FFF"
+									ariaLabel="bars-loading"
+									wrapperStyle={{
+										width: 'max-content',
+										margin: 'auto'
+									}}
+									wrapperClass=""
+									visible={true}
+								/> : 'Upload Image'}
+							</div>
 						</label>
 						<input
 							type='file'
@@ -221,9 +235,20 @@ const EditProfile = () => {
 									type='submit'
 									className='text-center w-[100px] mr-[10px] p-[5px] border-md bg-emerald-900 text-white'
 								>
-									Save
+									{uploading ? <Circles
+										height="20"
+										width="20"
+										color="#FFF"
+										ariaLabel="circles-loading"
+										wrapperStyle={{
+											margin: 'auto',
+											width: 'max-content'
+										}}
+										wrapperClass=""
+										visible={true}
+									/> : 'Save'}
 								</button>
-								<button className='text-center w-[100px] p-[5px] border-md bg-gray-300' onClick={() => {navigate(-1)}}>
+								<button className='text-center w-[100px] p-[5px] border-md bg-gray-300' onClick={() => { navigate(-1) }}>
 									Cancel
 								</button>
 							</div>

@@ -2,6 +2,7 @@ import { lazy, ReactElement, Suspense, useContext } from 'react';
 import { Route, Routes, Navigate } from 'react-router-dom';
 import Layout from './Components/Layout';
 import Loading from './Components/Loading';
+import 'react-toastify/dist/ReactToastify.css';
 import { authContext } from './Context/authContext';
 
 const Dashboard = lazy(() => import('./Pages/Dashboard'));

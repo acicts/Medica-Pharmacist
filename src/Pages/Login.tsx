@@ -1,5 +1,4 @@
 import LoginForm from "../Components/LoginForm";
-
 const Login = () => {
   return (
     <div className="flex w-full items-end justify-between lg:items-center h-[100vh]">

@@ -7,6 +7,8 @@ import {
 	VerificationDataSection,
 } from './Sections';
 import axios from 'axios';
+import { toast, ToastContainer } from 'react-toastify';
+import { Circles } from 'react-loader-spinner';
 
 const SignupForm = () => {
 	const [currSection, setCurrSection] = useState(0);
@@ -14,6 +16,9 @@ const SignupForm = () => {
 
 	const [logo, setLogo] = useState<File>();
 	const [passImg, setPassImg] = useState<File>();
+	const [logoURL, setLogoURL] = useState<string | undefined>();
+	const [passImgURL, setPassImgURL] = useState<string | undefined>();
+	const [uploading, setUploading] = useState(false);
 
 	const contactValidators = [
 		{
@@ -74,12 +79,13 @@ const SignupForm = () => {
 
 	const formSubmitHandler: FormEventHandler = (e) => {
 		e.preventDefault();
-
+		console.log('Submitting....')
 		for (let i = 0; i < authenticationDataValidatos.length; i++) {
 			if (!authenticationDataValidatos[i].isInputValid) {
 				return authenticationDataValidatos[i].focusHandler();
 			}
 		}
+		setUploading(true)
 		const formData: any = new FormData();
 		formData.append('logo', logo);
 		formData.append('pharmacyPassImg', passImg);
@@ -102,6 +108,13 @@ const SignupForm = () => {
 			.post(url, formData)
 			.then((response) => {
 				console.log(response);
+				if (response.data.success) {
+					toast.success(response.data.message)
+				}
+				else {
+					toast.error(response.data.message)
+				}
+				setUploading(false)
 			})
 			.catch(console.log);
 	};
@@ -124,70 +137,78 @@ const SignupForm = () => {
 	};
 
 	return (
-		<form
-			onSubmit={formSubmitHandler}
-			className='min-h-[80vh] md:min-h-[70vh] flex flex-col items-start justify-between w-full'
-		>
-			{currSection === 0 ? (
-				<ContactSection
-					validators={contactValidators}
-					setLogo={setLogo}
-				/>
-			) : currSection === 1 ? (
-				<VerificationDataSection
-					validators={verificationDataValidators}
-					setPassImg={setPassImg}
-				/>
-			) : (
-				<CredentialsSection validators={authenticationDataValidatos} />
-			)}
-			<div className='w-full'>
-				<div className='flex items-end justify-between w-[40px] ml-[5px] mt-[45px] mb-[15px]'>
-					{sections.map((section) => (
-						<div
-							className={`w-[8px] h-[8px] transition-colors rounded-full ${currSection === section
-								? 'bg-[#2F8D76]'
-								: 'bg-gray-400'
-								}`}
-						/>
-					))}
+		<>
+			<ToastContainer position={toast.POSITION.BOTTOM_RIGHT} />
+			<form
+				onSubmit={formSubmitHandler}
+				className='min-h-[80vh] md:min-h-[70vh] flex flex-col items-start justify-between w-full'
+			>
+				{currSection === 0 ? (
+					<ContactSection
+						validators={contactValidators}
+						setLogo={setLogo}
+						logo={logo}
+						setLogoURL={setLogoURL}
+						logoURL={logoURL}
+					/>
+				) : currSection === 1 ? (
+					<VerificationDataSection
+						validators={verificationDataValidators}
+						setPassImg={setPassImg}
+						passImg={passImg}
+						setPassImgURL={setPassImgURL}
+						passImgURL={passImgURL}
+					/>
+				) : (
+					<CredentialsSection validators={authenticationDataValidatos} />
+				)}
+				<div className='w-full'>
+					<div className='flex items-end justify-between w-[40px] ml-[5px] mt-[45px] mb-[15px]'>
+						{sections.map((section) => (
+							<div
+								className={`w-[8px] h-[8px] transition-colors rounded-full ${currSection === section
+									? 'bg-[#2F8D76]'
+									: 'bg-gray-400'
+									}`}
+							/>
+						))}
+					</div>
+					<div className='flex items-center justify-between w-52 md:w-80'>
+						{currSection !== 0 && (
+							<button
+								type='button'
+								onClick={() => setCurrSection(currSection - 1)}
+								className='register-btn'
+							>
+								Back
+							</button>
+						)}
+						{currSection === 2 ? (
+							<button
+								type='submit'
+								className='register-btn'
+								id='reg-btn'
+							>{'Sign Up'}</button>
+						) : (
+							<button
+								onClick={sectionIncrementHanlder}
+								type='button'
+								className='register-btn'
+							>
+								Next
+							</button>
+						)}
+					</div>
+					<div className='font-light text-[#2F8D76] mb-[15px]'>
+						<p>
+							Already have an account?{' '}
+							<Link to='/login' className='underline'>
+								Login
+							</Link>
+						</p>
+					</div>
 				</div>
-				<div className='flex items-center justify-between w-52 md:w-80'>
-					{currSection !== 0 && (
-						<button
-							type='button'
-							onClick={() => setCurrSection(currSection - 1)}
-							className='register-btn'
-						>
-							Back
-						</button>
-					)}
-					{currSection === 2 ? (
-						<input
-							type='submit'
-							className='register-btn'
-							value='Sign Up'
-						/>
-					) : (
-						<button
-							onClick={sectionIncrementHanlder}
-							type='button'
-							className='register-btn'
-						>
-							Next
-						</button>
-					)}
-				</div>
-				<div className='font-light text-[#2F8D76] mb-[15px]'>
-					<p>
-						Already have an account?{' '}
-						<Link to='/login' className='underline'>
-							Login
-						</Link>
-					</p>
-				</div>
-			</div>
-		</form>
+			</form></>
 	);
 };
 
