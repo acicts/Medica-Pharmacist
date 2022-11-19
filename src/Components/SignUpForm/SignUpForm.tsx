@@ -7,7 +7,7 @@ import {
 	VerificationDataSection,
 } from './Sections';
 import axios from 'axios';
-import { toast, ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
 import { Circles } from 'react-loader-spinner';
 
 const SignupForm = () => {
@@ -138,7 +138,6 @@ const SignupForm = () => {
 
 	return (
 		<>
-			<ToastContainer position={toast.POSITION.BOTTOM_RIGHT} />
 			<form
 				onSubmit={formSubmitHandler}
 				className='min-h-[80vh] md:min-h-[70vh] flex flex-col items-start justify-between w-full'

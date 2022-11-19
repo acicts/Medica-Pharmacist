@@ -12,7 +12,7 @@ import {
 import { Link } from 'react-router-dom';
 import { authContext } from '../Context/authContext';
 import useInput from '../hooks/useInput';
-import { toast, ToastContainer } from 'react-toastify'
+import { toast } from 'react-toastify'
 import { Circles } from 'react-loader-spinner';
 
 
@@ -161,7 +161,6 @@ const LoginForm = () => {
 					</div>
 				</div>
 			</form>
-			<ToastContainer position={toast.POSITION.BOTTOM_RIGHT} />
 		</>
 
 	);

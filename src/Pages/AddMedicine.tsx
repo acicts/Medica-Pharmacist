@@ -12,6 +12,8 @@ import React, {
 } from 'react';
 import Dropzone from 'react-dropzone';
 import { BsCloudUploadFill } from 'react-icons/bs';
+import { Circles } from 'react-loader-spinner';
+import { toast } from 'react-toastify';
 import { authContext } from '../Context/authContext';
 import useInput from '../hooks/useInput';
 
@@ -56,6 +58,19 @@ const Input = forwardRef(
 		);
 	}
 );
+
+const getBase64 = (file: File | undefined, cb: any) => {
+	if (!file) return cb('');
+	let reader = new FileReader()
+	reader.readAsDataURL(file!)
+	reader.onload = () => {
+		cb(reader.result)
+	};
+	reader.onerror = function (error) {
+		cb(error)
+	}
+
+}
 
 const DropDown = forwardRef(
 	(props: selectProps, ref: LegacyRef<HTMLSelectElement>) => {
@@ -137,6 +152,7 @@ const AddMedicine = () => {
 	);
 	const desctiptionValidator = useInput(() => true);
 	const [image, setImage] = useState<File>();
+	const [imgURL, setImageURL] = useState('');
 	useEffect(() => {
 		const fetchData = async () => {
 			setLoading(true);
@@ -150,21 +166,20 @@ const AddMedicine = () => {
 		fetchData();
 	}, []);
 
+	const [uploading, setUploading] = useState(false)
+
 	const uploadHandler: FormEventHandler = (e) => {
 		e.preventDefault();
 		if (!medicineNameValidator.isInputValid)
-			medicineNameValidator.focusHandler();
-		if (!qtyValidator.isInputValid) qtyValidator.focusHandler();
-		if (!sciNameValidator.isInputValid) sciNameValidator.focusHandler();
+			return medicineNameValidator.focusHandler();
+		if (!qtyValidator.isInputValid) return qtyValidator.focusHandler();
+		if (!sciNameValidator.isInputValid) return sciNameValidator.focusHandler();
 		if (!manufacturerValidator.isInputValid)
-			manufacturerValidator.focusHandler();
-		if (!desctiptionValidator.isInputValid)
-			medicineNameValidator.focusHandler();
+			return manufacturerValidator.focusHandler();
 
-
+		setUploading(true)
 
 		const formData = new FormData();
-		console.log(image)
 		formData.append('manufacturer', manufacturerValidator.inputValue);
 		formData.append('name', medicineNameValidator.inputValue);
 		formData.append('description', desctiptionValidator.inputValue);
@@ -175,7 +190,13 @@ const AddMedicine = () => {
 		const url = `${process.env.REACT_APP_API_ENDPOINT}/pharmacist/medicine?token=${authCtx.token}`
 
 		axios.post(url, formData).then((response) => {
-			console.log(response)
+			if (response.data.success) toast.success(response.data.message);
+			medicineNameValidator.reset();
+			qtyValidator.reset();
+			sciNameValidator.reset();
+			manufacturerValidator.reset();
+			desctiptionValidator.reset();
+			setUploading(false)
 		})
 	};
 	return (
@@ -258,11 +279,19 @@ const AddMedicine = () => {
 							/>
 							<div className='mb-[15px] md:hidden'>
 								<label className='text-xs'>Image*</label>
-								<Dropzone onDrop={(files) => { setImage(files[0]) }}>
+								<Dropzone onDrop={(files) => {
+									setImage(files[0]); getBase64(files[0], setImageURL)
+								}}>
 									{({ getRootProps, getInputProps }) => (
 										<section
-											className='w-full h-max py-[10px] md:aspect-square border-gray-300 border-2 rounded-sm px-3 text-center items-center flex flex-col justify-center cursor-pointer'
+											className="w-full h-max py-[10px] md:aspect-square border-gray-300 border-2 rounded-sm px-3 text-center items-center flex flex-col justify-center cursor-pointer relative before:content-[''] before:absolute before:w-full before:h-max before:bg-white before:bg-opacity-70 before:rounded-sm"
 											{...getRootProps()}
+											style={{
+												backgroundPosition: 'center',
+												backgroundSize: 'cover',
+												backgroundRepeat: 'no-repeat',
+												backgroundImage: `url(${imgURL})`
+											}}
 										>
 											<BsCloudUploadFill
 												className='w-24 h-12'
@@ -288,7 +317,18 @@ const AddMedicine = () => {
 										type='submit'
 										className='text-center w-[100px] mr-[10px] p-[5px] border-md bg-emerald-900 text-white'
 									>
-										Save
+										{uploading ? <Circles
+											height="20"
+											width="20"
+											color="#FFF"
+											ariaLabel="circles-loading"
+											wrapperStyle={{
+												margin: 'auto',
+												width: 'max-content'
+											}}
+											wrapperClass=""
+											visible={true}
+										/> : 'Save'}
 									</button>
 									<button className='text-center w-[100px] p-[5px] border-md bg-gray-300'>
 										Cancel
@@ -298,11 +338,19 @@ const AddMedicine = () => {
 						</div>
 						<div className='hidden md:block'>
 							<label className='text-xs'>Image*</label>
-							<Dropzone onDrop={(files) => { setImage(files[0]) }}>
+							<Dropzone onDrop={(files) => {
+								setImage(files[0]); getBase64(files[0], setImageURL)
+							}}>
 								{({ getRootProps, getInputProps }) => (
 									<section
-										className='w-[175px] h-max py-[10px] md:aspect-square border-gray-300 border-2 rounded-sm px-3 text-center items-center flex flex-col justify-center cursor-pointer'
+										className="w-[175px] h-max py-[10px] md:aspect-square border-gray-300 border-2 rounded-sm px-3 text-center items-center flex flex-col justify-center cursor-pointer relative before:content-[''] before:absolute before:w-[175px] before:aspect-square before:bg-white before:bg-opacity-70 before:rounded-sm"
 										{...getRootProps()}
+										style={{
+											backgroundPosition: 'center',
+											backgroundSize: 'cover',
+											backgroundRepeat: 'no-repeat',
+											backgroundImage: `url(${imgURL})`
+										}}
 									>
 										<BsCloudUploadFill
 											className='w-24 h-12'

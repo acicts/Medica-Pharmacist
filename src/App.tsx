@@ -4,6 +4,7 @@ import Layout from './Components/Layout';
 import Loading from './Components/Loading';
 import 'react-toastify/dist/ReactToastify.css';
 import { authContext } from './Context/authContext';
+import { toast, ToastContainer } from 'react-toastify';
 
 const Dashboard = lazy(() => import('./Pages/Dashboard'));
 const Medicine = lazy(() => import('./Pages/Medicine'));
@@ -148,6 +149,8 @@ const App = () => (
 				</Routes>
 			</Suspense>
 		</Layout>
+		<ToastContainer position={toast.POSITION.BOTTOM_RIGHT} />
+
 	</>
 );
 

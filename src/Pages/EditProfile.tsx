@@ -13,6 +13,7 @@ import React, {
 } from 'react';
 import { Bars, Circles } from 'react-loader-spinner';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { authContext } from '../Context/authContext';
 import useInput from '../hooks/useInput';
 
@@ -115,6 +116,9 @@ const EditProfile = () => {
 		setUploading(true)
 		const url = `${process.env.REACT_APP_API_ENDPOINT}/pharmacist/profile?token=${authCtx.token}`;
 		const body = JSON.stringify({
+			email: {
+				address: emailValidator.inputValue,
+			},
 			contact: {
 				address: addressValidator.inputValue,
 				phoneNo: noValidator.inputValue
@@ -127,6 +131,13 @@ const EditProfile = () => {
 			}
 		}).then((response) => {
 			console.log(response)
+			if (response.data.success) {
+				toast.success(response.data.message)
+				if (response.data.emailChanged) authCtx.logout()
+			}
+			else {
+				toast.error(response.data.message)
+			}
 			setUploading(false)
 		}).catch(console.log)
 	}
@@ -153,7 +164,7 @@ const EditProfile = () => {
 								backgroundRepeat: 'no-repeat',
 							}}
 						>
-							<div className='bg-black text-sm bg-opacity-30 text-white rounded-b-md  w-full py-[5px] text-center absolute bottom-0 left-0'>
+							<section className='bg-black text-sm bg-opacity-30 text-white rounded-b-md  w-full py-[5px] text-center absolute bottom-0 left-0'>
 								{imageUploading ? <Bars
 									height="20"
 									width="20"
@@ -166,7 +177,7 @@ const EditProfile = () => {
 									wrapperClass=""
 									visible={true}
 								/> : 'Upload Image'}
-							</div>
+							</section>
 						</label>
 						<input
 							type='file'
