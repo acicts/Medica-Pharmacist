@@ -21,15 +21,19 @@ export const ContactSection = ({
 	setLogo,
 	logo,
 	setLogoURL,
-	logoURL
+	logoURL,
+	logoFocused,
+	setLogoFocused
 }: {
 	validators: Array<any>;
 	setLogo: Dispatch<SetStateAction<File | undefined>>;
 	logo: File | undefined
 	setLogoURL: Dispatch<SetStateAction<string | undefined>>;
-	logoURL: string | undefined
+	logoURL: string | undefined;
+	setLogoFocused: Dispatch<SetStateAction<boolean>>;
+	logoFocused: boolean;
 }) => {
-
+	const logoHasError = logoFocused && !logo;
 	return (
 		<section>
 			{validators.map((validator) => {
@@ -54,13 +58,15 @@ export const ContactSection = ({
 				>
 					Logo
 				</label>
+
 				<Dropzone onDrop={(files) => {
 					setLogo(files[0]); getBase64(files[0], (path: any) => {
 						setLogoURL(path)
 					})
-				}} >
+				}} onFileDialogCancel={() => setLogoFocused(true)}>
 					{({ getRootProps, getInputProps }) => (
 						<section
+
 							className="aspect-square w-40 border-gray-300 border-2 rounded-xl px-3 text-center items-center flex flex-col justify-center cursor-pointer relative before:content-[''] before:absolute before:w-40 before:aspect-square before:bg-white before:bg-opacity-70 before:rounded-xl"
 							{...getRootProps()}
 							style={{
@@ -86,6 +92,10 @@ export const ContactSection = ({
 						</section>
 					)}
 				</Dropzone>
+				{logoHasError && <p className='text-red-500 text-xs'>
+					<sup>*</sup>
+					Please attach an image
+				</p>}
 			</div>
 		</section>
 	);
@@ -96,14 +106,20 @@ export const VerificationDataSection = ({
 	setPassImg,
 	passImg,
 	setPassImgURL,
-	passImgURL
+	passImgURL,
+	setPassImgFocused,
+	passImgFocused
 }: {
 	validators: Array<any>;
 	setPassImg: Dispatch<SetStateAction<File | undefined>>;
 	passImg: File | undefined
 	setPassImgURL: Dispatch<SetStateAction<string | undefined>>;
-	passImgURL: string | undefined
+	passImgURL: string | undefined;
+	setPassImgFocused: Dispatch<SetStateAction<boolean>>;
+	passImgFocused: boolean;
 }) => {
+	const imgHasError = passImgFocused && !passImg;
+
 	return (
 		<section>
 			{validators.map((validator) => {
@@ -132,7 +148,7 @@ export const VerificationDataSection = ({
 					setPassImg(files[0]); getBase64(files[0], (path: any) => {
 						setPassImgURL(path)
 					})
-				}}>
+				}} onFileDialogCancel={() => setPassImgFocused(true)}>
 					{({ getRootProps, getInputProps }) => (
 						<section
 							className="aspect-square w-40 border-gray-300 border-2 rounded-xl px-3 text-center items-center flex flex-col justify-center cursor-pointer relative before:content-[''] before:absolute before:w-40 before:aspect-square before:bg-white before:bg-opacity-70 before:rounded-xl"
@@ -160,6 +176,10 @@ export const VerificationDataSection = ({
 						</section>
 					)}
 				</Dropzone>
+				{imgHasError && <p className='text-red-500 text-xs'>
+					<sup>*</sup>
+					Please attach an image
+				</p>}
 			</div>
 		</section>
 	);

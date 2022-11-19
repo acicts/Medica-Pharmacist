@@ -15,6 +15,7 @@ import { Bars, Circles } from 'react-loader-spinner';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { authContext } from '../Context/authContext';
+import { profileContext } from '../Context/profileContext';
 import useInput from '../hooks/useInput';
 
 
@@ -64,6 +65,7 @@ const EditProfile = () => {
 	const [image, setImage] = useState('');
 	const [loading, setLoading] = useState(false);
 	const authCtx = useContext(authContext);
+	const profileCtx = useContext(profileContext)
 
 	const [imageUploading, setImageUploading] = useState(false)
 	const [uploading, setUploading] = useState(false)
@@ -106,6 +108,7 @@ const EditProfile = () => {
 			const data = response.data;
 			if (data.success) {
 				setImage(data.link)
+				profileCtx.updateProfile(data.link, pharmacyNameValidator.inputValue)
 			}
 			setImageUploading(false)
 		}).catch(console.log)
@@ -133,7 +136,7 @@ const EditProfile = () => {
 			console.log(response)
 			if (response.data.success) {
 				toast.success(response.data.message)
-				if (response.data.emailChanged) authCtx.logout()
+				profileCtx.updateProfile(response.data.user.logo.link, response.data.user.shopName)
 			}
 			else {
 				toast.error(response.data.message)
@@ -259,7 +262,7 @@ const EditProfile = () => {
 										visible={true}
 									/> : 'Save'}
 								</button>
-								<button className='text-center w-[100px] p-[5px] border-md bg-gray-300' onClick={() => { navigate(-1) }}>
+								<button type='button' className='text-center w-[100px] p-[5px] border-md bg-gray-300' onClick={() => { navigate(-1) }}>
 									Cancel
 								</button>
 							</div>

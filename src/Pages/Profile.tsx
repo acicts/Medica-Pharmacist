@@ -63,7 +63,7 @@ const Profile = () => {
 							</p>
 							<hr color='#6C6C6C' />
 							<div>
-								<Field term='Pharmacy Name' value='Test Name' />
+								<Field term='Pharmacy Name' value={pharmacy.shopName} />
 								<Field
 									term='Email Address'
 									value={pharmacy.email.address}

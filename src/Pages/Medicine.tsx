@@ -21,7 +21,7 @@ const Medicine = () => {
 						<Link to='/stocks/new'>
 							<button
 								type='button'
-								className='inline-flex items-center rounded-md border border-transparent bg-red-600 px-4 py-2 text-sm font-medium text-white shadow-sm transition-colors hover:bg-[#152927] focus:outline-none'
+								className='inline-flex items-center rounded-md border border-transparent px-4 py-2 text-sm font-medium text-white shadow-sm transition-colors bg-red-500  hover:bg-red-600 focus:outline-none'
 							>
 								<AiOutlinePlus
 									className='h-5 w-5 flex-shrink-0 text-white'

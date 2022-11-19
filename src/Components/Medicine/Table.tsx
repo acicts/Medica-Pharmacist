@@ -1,4 +1,4 @@
-import React, { useMemo, useEffect, useState } from 'react';
+import React, { useMemo, useEffect, useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import {
 	useTable,
@@ -15,6 +15,9 @@ import {
 	AiOutlineDelete,
 } from 'react-icons/ai';
 import { DOTS, useCustomPagination } from '../../hooks/useCustomPagination';
+import { authContext } from '../../Context/authContext';
+import axios from 'axios';
+import { toast } from 'react-toastify';
 
 export function GlobalFilter({
 	globalFilter,
@@ -51,15 +54,41 @@ export function GlobalFilter({
 	);
 }
 
-export function deleteItem(itemID: number, itemName: string) {
-	if (window.confirm(`Are you sure, want to delete ${itemName}`)) {
-		// eslint-disable-next-line no-restricted-globals
-		location.reload();
-	}
-}
+
 
 const Table = ({ placeholder }: { placeholder: string }) => {
-	const data = useMemo<any[]>(() => Stocks(), []);
+	const [data, setData] = useState([]);
+	const authCtx = useContext(authContext);
+
+	function deleteItem(itemID: number, itemName: string) {
+		if (window.confirm(`Are you sure, want to delete ${itemName}`)) {
+			const url = `${process.env.REACT_APP_API_ENDPOINT}/pharmacist/medicine/${itemID}?token=${authCtx.token}`;
+			axios.delete(url).then((response) => {
+				if (response.data.success) {
+					toast.success(response.data.message)
+					const tempData = data;
+					tempData.splice(tempData.findIndex((i: any) => i.medicineID == itemID), 1);
+					setData(data);
+				}
+			})
+		}
+	}
+
+	useEffect(() => {
+		const url = `${process.env.REACT_APP_API_ENDPOINT}/pharmacist/medicine?token=${authCtx.token}`;
+		axios.get(url).then((response) => {
+			console.log(response)
+			setData(response.data._medicines.map((i: any) => {
+				return {
+					medicineName: i.name,
+					medicineID: i._id,
+					manufacturer: i.manufacturer,
+					qty: i.stock,
+					chemicalName: i.chemicalName
+				}
+			}))
+		})
+	}, [authCtx.token])
 
 	const columns = useMemo(
 		() => [
@@ -68,8 +97,8 @@ const Table = ({ placeholder }: { placeholder: string }) => {
 				accessor: 'medicineName',
 			},
 			{
-				Header: 'Medicine ID',
-				accessor: 'medicineID',
+				Header: 'Chemical Name',
+				accessor: 'chemicalName',
 			},
 			{
 				Header: 'Manufacturer',
@@ -88,7 +117,7 @@ const Table = ({ placeholder }: { placeholder: string }) => {
 						<Link to={/stocks/ + props.row.original.medicineID}>
 							<button
 								type='button'
-								className='text-white bg-[#00a57c] transition-colors hover:bg-[#40a321] focus:outline-none rounded-lg px-5 py-2.5 text-center inline-flex items-center mr-2'
+								className='text-white bg-[#00a57c] transition-colors hover:bg-[#017c5d] focus:outline-none rounded-lg px-5 py-2.5 text-center inline-flex items-center mr-2'
 							>
 								<AiOutlineEdit />
 							</button>
@@ -96,7 +125,7 @@ const Table = ({ placeholder }: { placeholder: string }) => {
 
 						<button
 							type='button'
-							className='text-white bg-[#c40b04] transition-colors hover:bg-[#740303] focus:outline-none rounded-lg px-5 py-2.5 text-center inline-flex items-center mr-2'
+							className='text-white bg-red-500 transition-colors hover:bg-red-600 focus:outline-none rounded-lg px-5 py-2.5 text-center inline-flex items-center mr-2'
 							onClick={() =>
 								deleteItem(
 									props.row.original.medicineID,

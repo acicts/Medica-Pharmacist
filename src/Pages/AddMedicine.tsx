@@ -13,6 +13,7 @@ import React, {
 import Dropzone from 'react-dropzone';
 import { BsCloudUploadFill } from 'react-icons/bs';
 import { Circles } from 'react-loader-spinner';
+import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { authContext } from '../Context/authContext';
 import useInput from '../hooks/useInput';
@@ -152,6 +153,9 @@ const AddMedicine = () => {
 	);
 	const desctiptionValidator = useInput(() => true);
 	const [image, setImage] = useState<File>();
+	const [imageFocused, setImageFocused] = useState(false);
+
+	const imageError = imageFocused && !image;
 	const [imgURL, setImageURL] = useState('');
 	useEffect(() => {
 		const fetchData = async () => {
@@ -176,6 +180,7 @@ const AddMedicine = () => {
 		if (!sciNameValidator.isInputValid) return sciNameValidator.focusHandler();
 		if (!manufacturerValidator.isInputValid)
 			return manufacturerValidator.focusHandler();
+		if (!image) return setImageFocused(true);
 
 		setUploading(true)
 
@@ -193,12 +198,15 @@ const AddMedicine = () => {
 			if (response.data.success) toast.success(response.data.message);
 			medicineNameValidator.reset();
 			qtyValidator.reset();
-			sciNameValidator.reset();
+			sciNameValidator.reset()
+			sciNameValidator.setInputValue('-- Scientific Names --');
 			manufacturerValidator.reset();
 			desctiptionValidator.reset();
 			setUploading(false)
 		})
 	};
+
+	const navigate = useNavigate()
 	return (
 		<div>
 			<section className='mb-[25px]'>
@@ -277,7 +285,7 @@ const AddMedicine = () => {
 								errorMessage='Please enter a description'
 								value={desctiptionValidator.inputValue}
 							/>
-							<div className='mb-[15px] md:hidden'>
+							<div className='mb-[15px] md:hidden' onBlur={() => setImageFocused(true)}>
 								<label className='text-xs'>Image*</label>
 								<Dropzone onDrop={(files) => {
 									setImage(files[0]); getBase64(files[0], setImageURL)
@@ -309,6 +317,10 @@ const AddMedicine = () => {
 										</section>
 									)}
 								</Dropzone>
+								{imageError && <p className='text-red-500 text-xs'>
+									<sup>*</sup>
+									Please attach an image
+								</p>}
 							</div>
 							<div className='flex justify-between mb-[15px] md:flex-row-reverse'>
 								<div />
@@ -330,17 +342,17 @@ const AddMedicine = () => {
 											visible={true}
 										/> : 'Save'}
 									</button>
-									<button className='text-center w-[100px] p-[5px] border-md bg-gray-300'>
+									<button onClick={() => navigate(-1)} type='button' className='text-center w-[100px] p-[5px] border-md bg-gray-300'>
 										Cancel
 									</button>
 								</div>
 							</div>
 						</div>
-						<div className='hidden md:block'>
+						<div className='hidden md:block' onBlur={() => setImageFocused(true)}>
 							<label className='text-xs'>Image*</label>
 							<Dropzone onDrop={(files) => {
 								setImage(files[0]); getBase64(files[0], setImageURL)
-							}}>
+							}} >
 								{({ getRootProps, getInputProps }) => (
 									<section
 										className="w-[175px] h-max py-[10px] md:aspect-square border-gray-300 border-2 rounded-sm px-3 text-center items-center flex flex-col justify-center cursor-pointer relative before:content-[''] before:absolute before:w-[175px] before:aspect-square before:bg-white before:bg-opacity-70 before:rounded-sm"
@@ -368,6 +380,10 @@ const AddMedicine = () => {
 									</section>
 								)}
 							</Dropzone>
+							{imageError && <p className='text-red-500 text-xs'>
+								<sup>*</sup>
+								Please attach an image
+							</p>}
 						</div>
 						<div />
 					</div>

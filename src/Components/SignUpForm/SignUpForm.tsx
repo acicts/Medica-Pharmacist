@@ -15,7 +15,9 @@ const SignupForm = () => {
 	const sections = [0, 1, 2];
 
 	const [logo, setLogo] = useState<File>();
+	const [logoFocused, setLogoFocused] = useState(false);
 	const [passImg, setPassImg] = useState<File>();
+	const [passImgFocused, setPassImgFocused] = useState(false);
 	const [logoURL, setLogoURL] = useState<string | undefined>();
 	const [passImgURL, setPassImgURL] = useState<string | undefined>();
 	const [uploading, setUploading] = useState(false);
@@ -110,6 +112,17 @@ const SignupForm = () => {
 				console.log(response);
 				if (response.data.success) {
 					toast.success(response.data.message)
+					contactValidators.forEach((validator) => {
+						validator.reset()
+					});
+
+					authenticationDataValidatos.forEach((validator) => {
+						validator.reset()
+					});
+
+					verificationDataValidators.forEach((validator) => {
+						validator.reset()
+					});
 				}
 				else {
 					toast.error(response.data.message)
@@ -126,12 +139,14 @@ const SignupForm = () => {
 					return contactValidators[i].focusHandler();
 				}
 			}
+			if (!logo) return setLogoFocused(true)
 		} else if (currSection === 1) {
 			for (let i = 0; i < verificationDataValidators.length; i++) {
 				if (!verificationDataValidators[i].isInputValid) {
 					return verificationDataValidators[i].focusHandler();
 				}
 			}
+			if (!passImg) return setPassImgFocused(true)
 		}
 		setCurrSection((curr) => curr + 1);
 	};
@@ -149,6 +164,8 @@ const SignupForm = () => {
 						logo={logo}
 						setLogoURL={setLogoURL}
 						logoURL={logoURL}
+						setLogoFocused={setLogoFocused}
+						logoFocused={logoFocused}
 					/>
 				) : currSection === 1 ? (
 					<VerificationDataSection
@@ -157,6 +174,8 @@ const SignupForm = () => {
 						passImg={passImg}
 						setPassImgURL={setPassImgURL}
 						passImgURL={passImgURL}
+						passImgFocused={passImgFocused}
+						setPassImgFocused={setPassImgFocused}
 					/>
 				) : (
 					<CredentialsSection validators={authenticationDataValidatos} />
@@ -187,7 +206,18 @@ const SignupForm = () => {
 								type='submit'
 								className='register-btn'
 								id='reg-btn'
-							>{'Sign Up'}</button>
+							>{uploading ? <Circles
+								height="20"
+								width="20"
+								color="#FFF"
+								ariaLabel="circles-loading"
+								wrapperStyle={{
+									margin: 'auto',
+									width: 'max-content'
+								}}
+								wrapperClass=""
+								visible={true}
+							/> : 'Sign Up'}</button>
 						) : (
 							<button
 								onClick={sectionIncrementHanlder}
