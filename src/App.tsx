@@ -39,7 +39,7 @@ const CheckAuthenticated = (props: {
 
 const App = () => (
 	<>
-		<Layout ignoredRoutes={['/login', '/signup', '/verify/:token']}>
+		<Layout ignoredRoutes={['/login', '/signup', '/verify', '/reset']}>
 			<Suspense fallback={<Loading />}>
 				<Routes>
 					<Route
@@ -67,7 +67,7 @@ const App = () => (
 						}
 					/>
 					<Route
-						path='/reset/reqeust'
+						path='/reset/request'
 						element={
 							<CheckAuthenticated>
 								<SendResetPwdEmail />

@@ -53,6 +53,54 @@ const Input = forwardRef(
 	}
 );
 
+interface selectProps {
+	onChange: ChangeEventHandler<HTMLSelectElement>;
+	onBlur: FocusEventHandler<HTMLSelectElement>;
+	hasError: boolean;
+	errorMessage: string;
+	options: string[];
+	defaultValue: string;
+	label: string | undefined;
+	value: string;
+}
+
+const DropDown = forwardRef(
+	(props: selectProps, ref: LegacyRef<HTMLSelectElement>) => {
+		const options = [props.defaultValue, ...props.options];
+		return (
+			<div className='w-full mb-[15px]'>
+				{props.label && (
+					<label className='text-sm text-primary block my-[4px]'>
+						{props.label}
+					</label>
+				)}
+				<select
+					onChange={props.onChange}
+					onBlur={props.onBlur}
+					defaultValue={
+						props.defaultValue.length > 0
+							? props.defaultValue
+							: '---'
+					}
+					ref={ref}
+					value={props.value}
+					className='border-gray-500  mx-auto border-[1px] border-solid bg-[#F6FFF3] rounded-md block p-[9px] w-full text-left'
+				>
+					{options.map((_item) => {
+						return <option value={_item}>{_item}</option>;
+					})}
+				</select>
+				{props.hasError && (
+					<p className='text-red-500 text-xs'>
+						<sup>*</sup>
+						{props.errorMessage}
+					</p>
+				)}
+			</div>
+		);
+	}
+);
+
 const EditProfile = () => {
 	const pharmacyNameValidator = useInput(
 		(inputVal) => inputVal.trim().length > 0
@@ -62,6 +110,15 @@ const EditProfile = () => {
 	);
 	const noValidator = useInput((inputVal) => inputVal.trim().length === 10);
 	const addressValidator = useInput((inputVal) => inputVal.trim().length > 0);
+	const districtValidator = {
+		...useInput(inputVal => inputVal.trim().length > 0 && inputVal !== '-- DISTRICTS --'),
+		errorMsg: 'Please select a district',
+		id: 'district',
+		type: 'drop-down',
+		label: 'Discrict',
+		defaultValue: '-- DISTRICTS --',
+		options: ['Ampara', 'Anuradhapura', 'Badulla', 'Batticaloa', 'Colombo', 'Galle', 'Gampaha', 'Hambantota', 'Jaffna', 'Kalutara', 'Kandy', 'Kegalle', 'Kilinochchi', 'Kurunegala', 'Mannar', 'Matale', 'Matara', 'Moneragala', 'Mullaitivu', 'Nuwara Eliya', 'Polonnaruwa', 'Puttalam', 'Ratnapura', 'Trincomalee', 'Vavuniya']
+	};
 	const [image, setImage] = useState('');
 	const [loading, setLoading] = useState(false);
 	const authCtx = useContext(authContext);
@@ -87,6 +144,8 @@ const EditProfile = () => {
 				addressValidator.setInputValue(
 					response.data.user.contact.address
 				);
+				districtValidator.setInputValue(response.data.user.district)
+				districtValidator.defaultValue = response.data.user.district;
 				setImage(response.data.user.logo.link);
 				setLoading(false);
 			})
@@ -116,6 +175,11 @@ const EditProfile = () => {
 
 	const updateProfileHandler: FormEventHandler<HTMLFormElement> = (e) => {
 		e.preventDefault();
+		if (!pharmacyNameValidator.isInputValid) return pharmacyNameValidator.focusHandler();
+		if (!emailValidator.isInputValid) return emailValidator.focusHandler();
+		if (!districtValidator.isInputValid) return districtValidator.focusHandler();
+		if (!noValidator.isInputValid) return noValidator.focusHandler();
+		if (!addressValidator.isInputValid) return addressValidator.focusHandler();
 		setUploading(true)
 		const url = `${process.env.REACT_APP_API_ENDPOINT}/pharmacist/profile?token=${authCtx.token}`;
 		const body = JSON.stringify({
@@ -126,7 +190,8 @@ const EditProfile = () => {
 				address: addressValidator.inputValue,
 				phoneNo: noValidator.inputValue
 			},
-			shopName: pharmacyNameValidator.inputValue
+			shopName: pharmacyNameValidator.inputValue,
+			district: districtValidator.inputValue
 		});
 		axios.put(url, body, {
 			headers: {
@@ -241,6 +306,16 @@ const EditProfile = () => {
 							hasError={addressValidator.hasError}
 							errorMessage='Please enter a valid address'
 							value={addressValidator.inputValue}
+						/>
+						<DropDown
+							hasError={districtValidator.hasError}
+							options={districtValidator.options}
+							errorMessage={districtValidator.errorMsg}
+							label={districtValidator.label}
+							onChange={districtValidator.valueChangeHandler}
+							onBlur={districtValidator.inputBlurHandler}
+							defaultValue={districtValidator.defaultValue}
+							value={districtValidator.inputValue}
 						/>
 						<div className='flex justify-between mb-[15px]'>
 							<div />

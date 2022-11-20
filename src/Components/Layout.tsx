@@ -103,7 +103,7 @@ const Layout = (props: {
 			},
 		},
 	};
-	return !props.ignoredRoutes.find((r) => r === location || r.startsWith(location)) ? (
+	return !props.ignoredRoutes.find((r) => r === location || location.startsWith(r)) ? (
 		<div className='flex items-center h-full justify-between font-poppins'>
 			{/*Mobile Nav bar*/}
 			<motion.div

@@ -10,6 +10,10 @@
 	@apply w-24 md:w-36 h-10 bg-[#2F8D76] rounded-md text-white text-[1rem] md:text-[1.2rem] mb-[10px] cursor-pointer;
 }
 
+.register-btn-2 {
+	@apply py-[7px] px-[35px] text-center bg-[#2F8D76] text-sm hover:bg-[#1b9173] transition-colors rounded-md text-white text-[1rem] md:text-[1.2rem] mb-[10px] cursor-pointer;
+}
+
 .custom-scroll-bar::-webkit-scrollbar {
 	width: 5px;
 }

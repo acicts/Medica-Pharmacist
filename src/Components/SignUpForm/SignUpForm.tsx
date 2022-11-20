@@ -38,6 +38,15 @@ const SignupForm = () => {
 			label: 'Address',
 		},
 		{
+			...useInput(inputVal => inputVal.trim().length > 0 && inputVal !== '-- DISTRICTS --'),
+			errorMsg: 'Please select a district',
+			id: 'district',
+			type: 'drop-down',
+			label: 'Discrict',
+			defaultValue: '-- DISTRICTS --',
+			options: ['Ampara', 'Anuradhapura', 'Badulla', 'Batticaloa', 'Colombo', 'Galle', 'Gampaha', 'Hambantota', 'Jaffna', 'Kalutara', 'Kandy', 'Kegalle', 'Kilinochchi', 'Kurunegala', 'Mannar', 'Matale', 'Matara', 'Moneragala', 'Mullaitivu', 'Nuwara Eliya', 'Polonnaruwa', 'Puttalam', 'Ratnapura', 'Trincomalee', 'Vavuniya']
+		},
+		{
 			...useInput(
 				(inputVal) =>
 					inputVal.trim().length === 10 && !isNaN(parseInt(inputVal))

@@ -21,7 +21,7 @@ const ProfileContextProvider = (props: { children: ReactElement | ReactElement[]
     const authCtx = useContext(authContext);
     const fetchData = useCallback(() => {
         const url = `${process.env.REACT_APP_API_ENDPOINT}/pharmacist/profile?token=${authCtx.token}`;
-        axios
+        if (authCtx.token) axios
             .get(url)
             .then((response) => {
                 console.log(response);
