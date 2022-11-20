@@ -147,6 +147,9 @@ const AddMedicine = () => {
 	const qtyValidator = useInput(
 		(inputVal) => inputVal.toString().trim().length > 0
 	);
+	const pricePerUnitValidator = useInput(
+		(inputVal) => inputVal.toString().trim().length > 0
+	);
 	const sciNameValidator = useInput(
 		(inputVal) =>
 			inputVal.trim().length > 0 && inputVal !== '-- Scientific Names --'
@@ -170,13 +173,17 @@ const AddMedicine = () => {
 		fetchData();
 	}, []);
 
-	const [uploading, setUploading] = useState(false)
+	const [uploading, setUploading] = useState(false);
+
+	const navigate = useNavigate()
+
 
 	const uploadHandler: FormEventHandler = (e) => {
 		e.preventDefault();
 		if (!medicineNameValidator.isInputValid)
 			return medicineNameValidator.focusHandler();
 		if (!qtyValidator.isInputValid) return qtyValidator.focusHandler();
+		if (!pricePerUnitValidator.isInputValid) return pricePerUnitValidator.focusHandler();
 		if (!sciNameValidator.isInputValid) return sciNameValidator.focusHandler();
 		if (!manufacturerValidator.isInputValid)
 			return manufacturerValidator.focusHandler();
@@ -191,6 +198,7 @@ const AddMedicine = () => {
 		formData.append('stock', qtyValidator.inputValue);
 		formData.append('chemicalName', sciNameValidator.inputValue);
 		formData.append('image', image as Blob);
+		formData.append('pricePerUnit', pricePerUnitValidator.inputValue)
 
 		const url = `${process.env.REACT_APP_API_ENDPOINT}/pharmacist/medicine?token=${authCtx.token}`
 
@@ -202,11 +210,12 @@ const AddMedicine = () => {
 			sciNameValidator.setInputValue('-- Scientific Names --');
 			manufacturerValidator.reset();
 			desctiptionValidator.reset();
+			pricePerUnitValidator.reset();
 			setUploading(false)
+			navigate('/stocks')
 		})
 	};
 
-	const navigate = useNavigate()
 	return (
 		<div>
 			<section className='mb-[25px]'>
@@ -246,6 +255,18 @@ const AddMedicine = () => {
 								hasError={qtyValidator.hasError}
 								errorMessage='Please enter a valid quantity'
 								value={qtyValidator.inputValue}
+							/>
+							<Input
+								placeholder='Price Per Unit*'
+								type='number'
+								onChange={pricePerUnitValidator.valueChangeHandler}
+								onBlur={pricePerUnitValidator.inputBlurHandler}
+								ref={
+									pricePerUnitValidator.inputRef as RefObject<HTMLInputElement>
+								}
+								hasError={pricePerUnitValidator.hasError}
+								errorMessage='Please enter a valid price'
+								value={pricePerUnitValidator.inputValue}
 							/>
 							<DropDown
 								hasError={sciNameValidator.hasError}

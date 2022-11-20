@@ -11,6 +11,8 @@ import React, {
 	useEffect,
 	useState,
 } from 'react';
+import Dropzone from 'react-dropzone';
+import { BsCloudUploadFill } from 'react-icons/bs';
 import { Bars, Circles } from 'react-loader-spinner';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -140,6 +142,9 @@ const EditProfile = () => {
 		(inputVal) =>
 			inputVal.trim().length > 0 && inputVal !== '-- Scientific Names --'
 	);
+	const pricePerUnitValidator = useInput(
+		(inputVal) => inputVal.toString().trim().length > 0
+	);
 	const desctiptionValidator = useInput((inputVal) => inputVal.length > 0);
 	const [image, setImage] = useState('');
 	const fetchMedicineData = useCallback(() => {
@@ -154,6 +159,7 @@ const EditProfile = () => {
 				desctiptionValidator.setInputValue(response.data._medicine.description);
 				setQty(response.data._medicine.stock)
 				setImage(response.data._medicine.image.link)
+				pricePerUnitValidator.setInputValue(response.data._medicine.pricePerUnit)
 				console.log(response.data._medicine.description)
 			})
 			.catch(console.log);
@@ -174,13 +180,13 @@ const EditProfile = () => {
 		fetchData();
 		fetchMedicineData();
 		setLoading(false)
-	}, []);
+	}, [fetchMedicineData]);
 
-	const updateImageHandler: ChangeEventHandler<HTMLInputElement> = (e) => {
+	const updateImageHandler: any = (files: FileList) => {
 		setImageUploading(true)
 		const url = `${process.env.REACT_APP_API_ENDPOINT}/pharmacist/medicine/image/${id}?token=${authCtx.token}`;
 		const formData = new FormData();
-		formData.append('image', e.target.files![0]);
+		formData.append('image', files[0]);
 
 		axios.put(url, formData).then((response) => {
 			console.log(response)
@@ -199,7 +205,8 @@ const EditProfile = () => {
 			chemicalName: sciNameValidator.inputValue,
 			description: desctiptionValidator.inputValue,
 			stock: qty,
-			manufacturer: manufacturerValidator.inputValue
+			manufacturer: manufacturerValidator.inputValue,
+			pricePerUnit: pricePerUnitValidator.inputValue
 		})
 
 		const url = `${process.env.REACT_APP_API_ENDPOINT}/pharmacist/medicine/${id}?token=${authCtx.token}`;
@@ -231,7 +238,7 @@ const EditProfile = () => {
 				<form onSubmit={updateMedicineHandler} className='w-full flex items-start justify-between flex-col md:flex-row'>
 					<div className='w-full flex items-start justify-between mb-[15px] sm:flex-col md:w-min'>
 						<span className='font-bold text-[#5E5E5E]'>Image</span>
-						<label
+						{/* <label
 							className='w-[125px] h-[125px] sm:w-[175px] sm:h-[175px] rounded-md relative'
 							htmlFor='profilePic'
 							style={{
@@ -242,7 +249,7 @@ const EditProfile = () => {
 								backgroundRepeat: 'no-repeat',
 							}}
 						>
-							<div className='bg-black text-sm bg-opacity-30 text-white rounded-b-md  w-full py-[5px] text-center absolute bottom-0 left-0'>
+							<div className='w-[125px] h-[125px] sm:w-[175px] sm:h-[175px] rounded-md relative'>
 								{imageUploading ? <Circles
 									height="20"
 									width="20"
@@ -256,7 +263,42 @@ const EditProfile = () => {
 									visible={true}
 								/> : 'Upload Image'}
 							</div>
-						</label>
+						</label> */}
+						<Dropzone onDrop={updateImageHandler}>
+							{({ getRootProps, getInputProps }) => (
+								<section
+
+									className="aspect-square w-40 rounded-md px-3 text-center items-center flex flex-col justify-center cursor-pointer relative"
+									{...getRootProps()}
+									style={{
+										backgroundPosition: 'center',
+										backgroundSize: 'cover',
+										backgroundRepeat: 'no-repeat',
+										backgroundImage: `url(${image})`
+									}}
+								>
+
+									<div className='bg-black text-sm bg-opacity-30 text-white rounded-b-md  w-full py-[5px] text-center absolute bottom-0 left-0'>
+										{imageUploading ? <Bars
+											height="20"
+											width="20"
+											color="#FFF"
+											ariaLabel="bars-loading"
+											wrapperStyle={{
+												width: 'max-content',
+												margin: 'auto'
+											}}
+											wrapperClass=""
+											visible={true}
+										/> : 'Upload Image'}
+									</div>
+									<input
+										{...getInputProps()}
+										accept='image/png, image/jpg, image/jpeg'
+									/>
+								</section>
+							)}
+						</Dropzone>
 						<input type='file' id='profilePic' className='hidden' onChange={updateImageHandler} />
 					</div>
 					<div className='w-full md:w-[60%]'>
@@ -305,6 +347,18 @@ const EditProfile = () => {
 								</div>
 							</div>
 						</div>
+						<Input
+							placeholder='Price Per Unit*'
+							type='number'
+							onChange={pricePerUnitValidator.valueChangeHandler}
+							onBlur={pricePerUnitValidator.inputBlurHandler}
+							ref={
+								pricePerUnitValidator.inputRef as RefObject<HTMLInputElement>
+							}
+							hasError={pricePerUnitValidator.hasError}
+							errorMessage='Please enter a valid price'
+							value={pricePerUnitValidator.inputValue}
+						/>
 						<DropDown
 							hasError={sciNameValidator.hasError}
 							options={medicines}

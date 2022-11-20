@@ -11,6 +11,7 @@ import React, {
 	useEffect,
 	useState,
 } from 'react';
+import Dropzone from 'react-dropzone';
 import { Bars, Circles } from 'react-loader-spinner';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -157,11 +158,11 @@ const EditProfile = () => {
 		fetchData();
 	}, [fetchData]);
 
-	const updateImageHandler: ChangeEventHandler<HTMLInputElement> = (e) => {
+	const updateImageHandler: any = (files: FileList) => {
 		setImageUploading(true)
 		const url = `${process.env.REACT_APP_API_ENDPOINT}/pharmacist/profile/image?token=${authCtx.token}`;
 		const formData = new FormData();
-		formData.append('profilePic', e.target.files![0]);
+		formData.append('profilePic', files[0]);
 
 		axios.put(url, formData).then((response) => {
 			const data = response.data;
@@ -222,7 +223,7 @@ const EditProfile = () => {
 				<form className='w-full flex items-start justify-between flex-col md:flex-row' onSubmit={updateProfileHandler}>
 					<div className='w-full flex items-start justify-between mb-[15px] sm:flex-col md:w-min'>
 						<span className='font-bold text-[#5E5E5E]'>Logo</span>
-						<label
+						{/* <label
 							className='w-[125px] h-[125px] cursor-pointer sm:w-[175px] sm:h-[175px] rounded-md relative'
 							htmlFor='profilePic'
 							style={{
@@ -252,7 +253,42 @@ const EditProfile = () => {
 							id='profilePic'
 							className='hidden'
 							onChange={updateImageHandler}
-						/>
+						/> */}
+						<Dropzone onDrop={updateImageHandler}>
+							{({ getRootProps, getInputProps }) => (
+								<section
+
+									className="aspect-square w-40 rounded-md px-3 text-center items-center flex flex-col justify-center cursor-pointer relative"
+									{...getRootProps()}
+									style={{
+										backgroundPosition: 'center',
+										backgroundSize: 'cover',
+										backgroundRepeat: 'no-repeat',
+										backgroundImage: `url(${image})`
+									}}
+								>
+
+									<div className='bg-black text-sm bg-opacity-30 text-white rounded-b-md  w-full py-[5px] text-center absolute bottom-0 left-0'>
+										{imageUploading ? <Bars
+											height="20"
+											width="20"
+											color="#FFF"
+											ariaLabel="bars-loading"
+											wrapperStyle={{
+												width: 'max-content',
+												margin: 'auto'
+											}}
+											wrapperClass=""
+											visible={true}
+										/> : 'Upload Image'}
+									</div>
+									<input
+										{...getInputProps()}
+										accept='image/png, image/jpg, image/jpeg'
+									/>
+								</section>
+							)}
+						</Dropzone>
 					</div>
 					<div className='w-full md:w-[60%]'>
 						<span className='font-bold text-[#5E5E5E] mb-[15px]'>

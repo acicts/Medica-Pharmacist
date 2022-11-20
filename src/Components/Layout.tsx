@@ -262,7 +262,7 @@ const Layout = (props: {
 						/>
 					</motion.i>
 					<div className='w-max flex flex-col items-center justify-between text-white'>
-						<h1 className='font-bold text-lg'>Pharmacy App</h1>
+						<h1 className='font-bold text-lg'>Medica</h1>
 						<span className='text-xs font-light'>
 							Powered by ACICTS
 						</span>
@@ -315,7 +315,7 @@ const Layout = (props: {
 						/>
 					</motion.i>
 					<div className='w-max flex flex-col items-center justify-between text-white'>
-						<h1 className='font-bold text-lg'>Pharmacy App</h1>
+						<h1 className='font-bold text-lg'>Medica</h1>
 						<span className='text-xs font-light'>
 							Powered by ACICTS
 						</span>
@@ -333,7 +333,7 @@ const Layout = (props: {
 
 					<div className='w-full py-[15px] text-center bg-[#D9D9D9] text-sm font-light'>
 						{' '}
-						Copyright &copy; {new Date().getFullYear()} - Pharmacist
+						Copyright &copy; {new Date().getFullYear()} - Medica
 						- Powered by{' '}
 						<a
 							href='https://acicts.lk/'
