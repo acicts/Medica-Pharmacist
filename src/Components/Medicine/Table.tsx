@@ -18,6 +18,7 @@ import { DOTS, useCustomPagination } from '../../hooks/useCustomPagination';
 import { authContext } from '../../Context/authContext';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { cursorTo } from 'readline';
 
 export function GlobalFilter({
 	globalFilter,
@@ -60,15 +61,13 @@ const Table = ({ placeholder }: { placeholder: string }) => {
 	const [data, setData] = useState([]);
 	const authCtx = useContext(authContext);
 
-	function deleteItem(itemID: number, itemName: string) {
+	function deleteItem(itemID: string, itemName: string) {
 		if (window.confirm(`Are you sure, want to delete ${itemName}`)) {
 			const url = `${process.env.REACT_APP_API_ENDPOINT}/pharmacist/medicine/${itemID}?token=${authCtx.token}`;
 			axios.delete(url).then((response) => {
 				if (response.data.success) {
 					toast.success(response.data.message)
-					const tempData = data;
-					tempData.splice(tempData.findIndex((i: any) => i.medicineID == itemID), 1);
-					setData(data);
+					setData(curr => curr.filter((i: any) => i.medicineID !== itemID))
 				}
 			})
 		}
