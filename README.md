@@ -1,4 +1,4 @@
-[![Netlify Status](https://api.netlify.com/api/v1/badges/d42a53b4-8732-4b0a-88f5-b574bc77c85c/deploy-status)](https://app.netlify.com/sites/acicts-pharmacy-app-client/deploys) <a href="https://github.com/acicts/Medica-Pharmacist/stargazers"><img src="https://img.shields.io/github/stars/acicts/Medica-Pharmacist" alt="Stars Badge"/></a>
+[![Netlify Status](https://api.netlify.com/api/v1/badges/d1e3551c-4ce4-49bc-b8c6-a29605b42c18/deploy-status)](https://app.netlify.com/sites/acicits-pharmacy-app-pharmacist/deploys) <a href="https://github.com/acicts/Medica-Pharmacist/stargazers"><img src="https://img.shields.io/github/stars/acicts/Medica-Pharmacist" alt="Stars Badge"/></a>
 <a href="https://github.com/acicts/Medica-Pharmacist/network/members"><img src="https://img.shields.io/github/forks/acicts/Medica-Pharmacist" alt="Forks Badge"/></a>
 <a href="https://github.com/acicts/Medica-Pharmacist/pulls"><img src="https://img.shields.io/github/issues-pr/acicts/Medica-Pharmacist" alt="Pull Requests Badge"/></a>
 <a href="https://github.com/acicts/Medica-Pharmacist/issues"><img src="https://img.shields.io/github/issues/acicts/Medica-Pharmacist" alt="Issues Badge"/></a>
