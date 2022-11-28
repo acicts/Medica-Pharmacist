@@ -27,6 +27,7 @@ const Field = forwardRef(
 			label,
 			id,
 			type,
+			testid
 		}: {
 			type: string;
 			onChange: ChangeEventHandler<HTMLInputElement>;
@@ -36,6 +37,7 @@ const Field = forwardRef(
 			errorMsg: string;
 			label: string;
 			id: string;
+			testid: string
 		},
 		ref: LegacyRef<HTMLInputElement>
 	) => {
@@ -51,6 +53,7 @@ const Field = forwardRef(
 					value={value}
 					id={id}
 					ref={ref}
+					data-testid={testid}
 					className='focus:border-[#5E9486] rounded-md border-2 border-[#BCBCBC] w-full min-w-[300px] h-10 px-3 text-black'
 				/>
 				{hasError && (
@@ -70,6 +73,9 @@ const LoginForm = () => {
 	const [uploading, setUploading] = useState(false);
 	const authCtx = useContext(authContext);
 
+	// For testing
+	const [message, setMessage] = useState('');
+
 	const formSubmitHandler: FormEventHandler = async (e) => {
 		e.preventDefault();
 		if (!emailValidator.isInputValid) return emailValidator.focusHandler();
@@ -87,7 +93,6 @@ const LoginForm = () => {
 				headers: { 'Content-Type': 'application/json' },
 			})
 			.then((response) => {
-				console.log(response);
 				if (response.data.success) {
 					authCtx.login(response.data.token, response.data.expiresIn);
 				}
@@ -116,6 +121,7 @@ const LoginForm = () => {
 						id='email'
 						type='text'
 						label='Email'
+						testid="login-email-input"
 					/>
 					<Field
 						hasError={pwdValidator.hasError}
@@ -127,11 +133,13 @@ const LoginForm = () => {
 						id='pwd'
 						type='password'
 						label='Password'
+						testid="login-pwd-input"
+
 					/>
 				</div>
 
 				<div className=''>
-					<button type='submit' className='register-btn'>
+					<button type='submit' className='register-btn' data-testid="login-submit-btn">
 						{uploading ? <Circles
 							height="20"
 							width="20"

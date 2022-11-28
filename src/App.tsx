@@ -149,7 +149,7 @@ const App = () => (
 				</Routes>
 			</Suspense>
 		</Layout>
-		<ToastContainer position={toast.POSITION.BOTTOM_RIGHT} />
+		<ToastContainer data-testid="toast" position={toast.POSITION.BOTTOM_RIGHT} />
 
 	</>
 );
