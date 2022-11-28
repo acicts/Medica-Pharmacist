@@ -1,46 +1,64 @@
-# Getting Started with Create React App
+[![Netlify Status](https://api.netlify.com/api/v1/badges/d42a53b4-8732-4b0a-88f5-b574bc77c85c/deploy-status)](https://app.netlify.com/sites/acicts-pharmacy-app-client/deploys) <a href="https://github.com/acicts/Medica-Pharmacist/stargazers"><img src="https://img.shields.io/github/stars/acicts/Medica-Pharmacist" alt="Stars Badge"/></a>
+<a href="https://github.com/acicts/Medica-Pharmacist/network/members"><img src="https://img.shields.io/github/forks/acicts/Medica-Pharmacist" alt="Forks Badge"/></a>
+<a href="https://github.com/acicts/Medica-Pharmacist/pulls"><img src="https://img.shields.io/github/issues-pr/acicts/Medica-Pharmacist" alt="Pull Requests Badge"/></a>
+<a href="https://github.com/acicts/Medica-Pharmacist/issues"><img src="https://img.shields.io/github/issues/acicts/Medica-Pharmacist" alt="Issues Badge"/></a>
+<a href="https://github.com/acicts/Medica-Pharmacist/graphs/contributors"><img alt="GitHub contributors" src="https://img.shields.io/github/contributors/acicts/Medica-Pharmacist?color=2b9348"></a>
+![CI](https://github.com/acicts/Medica-Pharmacist/actions/workflows/node.js.yml/badge.svg)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Medica
 
-## Available Scripts
+Medica is an open-source project by ACICTS to help people find the medicine they want out of the pharmacies that have registered in the platform.
 
-In the project directory, you can run:
+This repository contains the source code of the users' platform. Following are the links to other repositories.
 
-### `npm start`
+-   [Users Platform](https://github.com/acicts/Medica-Client.git)
+-   [Backend](https://github.com/acicts/Medica-Backend)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+# Technologies used
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+-   React.JS
+-   TypeScript
+-   Axios
+-   Jest
+-   Webpack
 
-### `npm test`
+# How to run the code
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+First make sure you have the following packages/softwares installed in your machine.
 
-### `npm run build`
+-   Node
+-   Git
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Then run the following commands.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+#### 1. Clone the repository from github
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```bash
+git clone https://github.com/acicts/Medica-Pharmacist.git
+```
 
-### `npm run eject`
+#### 2. Install dependencies
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+```bash
+cd Medica-Client
+npm i
+```
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+#### 3. Create a .env file according to the [.env.example](./.env.example '.env.example') file
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+#### 4. Start the development server
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+```bash
+npm start
+```
 
-## Learn More
+# Contributing
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Pull requests are welcome. For major changes, please open an issue first
+to discuss what you would like to change.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Please refer to [CONTRIBUTING.md](./CONTRIBUTING.md) for more information.
+
+# License
+
+[MIT](./LICENSE)
