@@ -6,28 +6,28 @@ import { Link } from 'react-router-dom';
 const Medicine = () => {
 	return (
 		<div>
-			<div className='flex md:flex md:items-center md:justify-between'>
-				<div className='sm:min-w-0 flex-1'>
-					<h1 className='text-2xl font-bold sm:text-2xl width-auto'>
+			<div className="flex md:flex md:items-center md:justify-between">
+				<div className="sm:min-w-0 flex-1">
+					<h1 className="text-2xl font-bold sm:text-2xl width-auto">
 						List of Medicines
 					</h1>
-					<div className='row-span-1'>
-						<p className='text-xs'>List of Medicines Available</p>
+					<div className="row-span-1">
+						<p className="text-xs">List of Medicines Available</p>
 					</div>
 				</div>
 
-				<div className='mt-5 flex lg:mt-0 lg:ml-4'>
-					<span className='sm:ml-3'>
-						<Link to='/stocks/new'>
+				<div className="mt-5 flex lg:mt-0 lg:ml-4">
+					<span className="sm:ml-3">
+						<Link to="/stocks/new">
 							<button
-								type='button'
-								className='inline-flex items-center rounded-md border border-transparent px-4 py-2 text-sm font-medium text-white shadow-sm transition-colors bg-red-500  hover:bg-red-600 focus:outline-none'
+								type="button"
+								className="inline-flex items-center rounded-md border border-transparent px-4 py-2 text-sm font-medium text-white shadow-sm transition-colors bg-red-500  hover:bg-red-600 focus:outline-none"
 							>
 								<AiOutlinePlus
-									className='h-5 w-5 flex-shrink-0 text-white'
-									aria-hidden='true'
+									className="h-5 w-5 flex-shrink-0 text-white"
+									aria-hidden="true"
 								/>
-								<p className='sm:flex hidden ml-1.5'>
+								<p className="sm:flex hidden ml-1.5">
 									Add New Item
 								</p>
 							</button>
@@ -36,7 +36,7 @@ const Medicine = () => {
 				</div>
 			</div>
 
-			<MedTable placeholder='Search Inventory..' />
+			<MedTable placeholder="Search Inventory.." />
 		</div>
 	);
 };

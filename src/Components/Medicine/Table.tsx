@@ -37,25 +37,23 @@ export function GlobalFilter({
 	}, 200);
 
 	return (
-		<form className='max-w-sm pt-5 mb-5'>
-			<div className='relative w-full sm:w-[350px]'>
+		<form className="max-w-sm pt-5 mb-5">
+			<div className="relative w-full sm:w-[350px]">
 				<input
 					value={value || ''}
-					type='text'
+					type="text"
 					onChange={(e) => {
 						setValue(e.target.value);
 						onChange(e.target.value);
 					}}
-					placeholder='Search Inventory..'
-					className='w-full h-10 py-3 pl-4 pr-4 text-gray-500 rounded-md outline-none bg-[#E3F3F2] border border-[#01A768]'
+					placeholder="Search Inventory.."
+					className="w-full h-10 py-3 pl-4 pr-4 text-gray-500 rounded-md outline-none bg-[#E3F3F2] border border-[#01A768]"
 				/>
-				<AiOutlineSearch className='absolute top-0 bottom-0 w-6 h-5 my-auto text-gray-900 right-3 flex-shrink-0' />
+				<AiOutlineSearch className="absolute top-0 bottom-0 w-6 h-5 my-auto text-gray-900 right-3 flex-shrink-0" />
 			</div>
 		</form>
 	);
 }
-
-
 
 const Table = ({ placeholder }: { placeholder: string }) => {
 	const [data, setData] = useState([]);
@@ -66,28 +64,32 @@ const Table = ({ placeholder }: { placeholder: string }) => {
 			const url = `${process.env.REACT_APP_API_ENDPOINT}/pharmacist/medicine/${itemID}?token=${authCtx.token}`;
 			axios.delete(url).then((response) => {
 				if (response.data.success) {
-					toast.success(response.data.message)
-					setData(curr => curr.filter((i: any) => i.medicineID !== itemID))
+					toast.success(response.data.message);
+					setData((curr) =>
+						curr.filter((i: any) => i.medicineID !== itemID)
+					);
 				}
-			})
+			});
 		}
 	}
 
 	useEffect(() => {
 		const url = `${process.env.REACT_APP_API_ENDPOINT}/pharmacist/medicine?token=${authCtx.token}`;
 		axios.get(url).then((response) => {
-			console.log(response)
-			setData(response.data._medicines.map((i: any) => {
-				return {
-					medicineName: i.name,
-					medicineID: i._id,
-					manufacturer: i.manufacturer,
-					qty: i.stock,
-					chemicalName: i.chemicalName
-				}
-			}))
-		})
-	}, [authCtx.token])
+			console.log(response);
+			setData(
+				response.data._medicines.map((i: any) => {
+					return {
+						medicineName: i.name,
+						medicineID: i._id,
+						manufacturer: i.manufacturer,
+						qty: i.stock,
+						chemicalName: i.chemicalName,
+					};
+				})
+			);
+		});
+	}, [authCtx.token]);
 
 	const columns = useMemo(
 		() => [
@@ -115,16 +117,16 @@ const Table = ({ placeholder }: { placeholder: string }) => {
 					<div>
 						<Link to={/stocks/ + props.row.original.medicineID}>
 							<button
-								type='button'
-								className='text-white bg-[#00a57c] transition-colors hover:bg-[#017c5d] focus:outline-none rounded-lg px-5 py-2.5 text-center inline-flex items-center mr-2'
+								type="button"
+								className="text-white bg-[#00a57c] transition-colors hover:bg-[#017c5d] focus:outline-none rounded-lg px-5 py-2.5 text-center inline-flex items-center mr-2"
 							>
 								<AiOutlineEdit />
 							</button>
 						</Link>
 
 						<button
-							type='button'
-							className='text-white bg-red-500 transition-colors hover:bg-red-600 focus:outline-none rounded-lg px-5 py-2.5 text-center inline-flex items-center mr-2'
+							type="button"
+							className="text-white bg-red-500 transition-colors hover:bg-red-600 focus:outline-none rounded-lg px-5 py-2.5 text-center inline-flex items-center mr-2"
 							onClick={() =>
 								deleteItem(
 									props.row.original.medicineID,
@@ -188,15 +190,15 @@ const Table = ({ placeholder }: { placeholder: string }) => {
 				setGlobalFilter={setGlobalFilter}
 				placeholder={placeholder}
 			/>
-			<div className='mt-2 flex flex-col'>
-				<div className='overflow-x-auto'>
-					<div className='py-1 align-middle inline-block min-w-full px-1'>
-						<div className='shadow overflow-hidden border-b border-gray-200 sm:rounded-lg'>
+			<div className="mt-2 flex flex-col">
+				<div className="overflow-x-auto">
+					<div className="py-1 align-middle inline-block min-w-full px-1">
+						<div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
 							<table
 								{...getTableProps()}
-								className='min-w-full divide-y divide-gray-200'
+								className="min-w-full divide-y divide-gray-200"
 							>
-								<thead className='bg-gray-10'>
+								<thead className="bg-gray-10">
 									{headerGroups.map((headerGroup) => (
 										<tr
 											{...headerGroup.getHeaderGroupProps()}
@@ -205,7 +207,7 @@ const Table = ({ placeholder }: { placeholder: string }) => {
 												(column) => (
 													<th
 														{...column.getHeaderProps()}
-														className='px-6 py-5 text-left text-20 font-medium text-gray-500 bg-[#ececec] uppercase rounded-sm tracking-wider'
+														className="px-6 py-5 text-left text-20 font-medium text-gray-500 bg-[#ececec] uppercase rounded-sm tracking-wider"
 													>
 														{column.render(
 															'Header'
@@ -218,7 +220,7 @@ const Table = ({ placeholder }: { placeholder: string }) => {
 								</thead>
 								<tbody
 									{...getTableBodyProps()}
-									className='bg-white divide-y divide-gray-200'
+									className="bg-white divide-y divide-gray-200"
 								>
 									{page.map((row, i) => {
 										prepareRow(row);
@@ -228,7 +230,7 @@ const Table = ({ placeholder }: { placeholder: string }) => {
 													return (
 														<td
 															{...cell.getCellProps()}
-															className='px-6 py-8 whitespace-nowrap'
+															className="px-6 py-8 whitespace-nowrap"
 														>
 															{cell.render(
 																'Cell'
@@ -246,8 +248,8 @@ const Table = ({ placeholder }: { placeholder: string }) => {
 				</div>
 			</div>
 
-			<div className='py-3 flex items-center text-center justify-center pt-10'>
-				<div className='flex-1 flex justify-between md:hidden'>
+			<div className="py-3 flex items-center text-center justify-center pt-10">
+				<div className="flex-1 flex justify-between md:hidden">
 					<Button
 						onClick={() => previousPage()}
 						disabled={!canPreviousPage}
@@ -259,19 +261,19 @@ const Table = ({ placeholder }: { placeholder: string }) => {
 					</Button>
 				</div>
 				<div
-					className='hidden sm:flex-1 sm:flex sm:items-center sm:justify-between'
-					aria-label='Pagination'
+					className="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between"
+					aria-label="Pagination"
 				>
 					<div
-						className='relative z-0 inline-flex items-center ml-auto mr-auto rounded-md shadow-sm space-x-10'
-						aria-label='Pagination'
+						className="relative z-0 inline-flex items-center ml-auto mr-auto rounded-md shadow-sm space-x-10"
+						aria-label="Pagination"
 					>
 						{paginationRange?.map((pageNumber, index) => {
 							if (pageNumber === DOTS) {
 								return (
 									<PageButton
 										key={index}
-										className=''
+										className=""
 										onClick={() => gotoPage(0)}
 									>
 										...
@@ -283,7 +285,7 @@ const Table = ({ placeholder }: { placeholder: string }) => {
 								return (
 									<PageButton
 										key={index}
-										className=' active:bg-gray-500 active:border-gray-300'
+										className=" active:bg-gray-500 active:border-gray-300"
 										onClick={() => gotoPage(pageNumber - 1)}
 									>
 										{pageNumber}
@@ -294,7 +296,7 @@ const Table = ({ placeholder }: { placeholder: string }) => {
 							return (
 								<PageButton
 									key={index}
-									className='active:bg-gray-500 active:border-gray-300'
+									className="active:bg-gray-500 active:border-gray-300"
 									onClick={() => gotoPage(pageNumber - 1)}
 								>
 									{pageNumber}

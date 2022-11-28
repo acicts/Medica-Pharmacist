@@ -29,8 +29,8 @@ const Field = forwardRef(
 		ref: LegacyRef<HTMLInputElement>
 	) => {
 		return (
-			<div className='flex flex-col text-gray-500 focus-within:text-[#5E9486] w-full my-[15px]'>
-				<label htmlFor={id} className='text-sm mb-[4px] text-[#6C6C6C]'>
+			<div className="flex flex-col text-gray-500 focus-within:text-[#5E9486] w-full my-[15px]">
+				<label htmlFor={id} className="text-sm mb-[4px] text-[#6C6C6C]">
 					{label}
 				</label>
 				<input
@@ -40,10 +40,10 @@ const Field = forwardRef(
 					value={value}
 					id={id}
 					ref={ref}
-					className='focus:border-[#5E9486] rounded-md border-2 border-[#BCBCBC] w-full min-w-[300px] h-10 px-3 text-black'
+					className="focus:border-[#5E9486] rounded-md border-2 border-[#BCBCBC] w-full min-w-[300px] h-10 px-3 text-black"
 				/>
 				{hasError && (
-					<span className='text-red-500 text-xs'>{errorMsg}</span>
+					<span className="text-red-500 text-xs">{errorMsg}</span>
 				)}
 			</div>
 		);

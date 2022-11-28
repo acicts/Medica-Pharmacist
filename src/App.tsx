@@ -26,7 +26,7 @@ const CheckNotAuthenticated = (props: {
 }) => {
 	const authCtx = useContext(authContext);
 
-	return authCtx.token ? <>{props.children}</> : <Navigate to='/login' />;
+	return authCtx.token ? <>{props.children}</> : <Navigate to="/login" />;
 };
 
 const CheckAuthenticated = (props: {
@@ -34,7 +34,7 @@ const CheckAuthenticated = (props: {
 }) => {
 	const authCtx = useContext(authContext);
 	console.log(authCtx.token);
-	return authCtx.token ? <Navigate to='/dashboard' /> : <>{props.children}</>;
+	return authCtx.token ? <Navigate to="/dashboard" /> : <>{props.children}</>;
 };
 
 const App = () => (
@@ -43,7 +43,7 @@ const App = () => (
 			<Suspense fallback={<Loading />}>
 				<Routes>
 					<Route
-						path='/'
+						path="/"
 						element={
 							<CheckNotAuthenticated>
 								<Navigate to={'/dashboard'} />
@@ -51,7 +51,7 @@ const App = () => (
 						}
 					/>
 					<Route
-						path='/signup'
+						path="/signup"
 						element={
 							<CheckAuthenticated>
 								<Signup />
@@ -59,7 +59,7 @@ const App = () => (
 						}
 					/>
 					<Route
-						path='/login'
+						path="/login"
 						element={
 							<CheckAuthenticated>
 								<Login />
@@ -67,7 +67,7 @@ const App = () => (
 						}
 					/>
 					<Route
-						path='/reset/request'
+						path="/reset/request"
 						element={
 							<CheckAuthenticated>
 								<SendResetPwdEmail />
@@ -75,7 +75,7 @@ const App = () => (
 						}
 					/>
 					<Route
-						path='/reset/password/:token'
+						path="/reset/password/:token"
 						element={
 							<CheckAuthenticated>
 								<ResetPwd />
@@ -83,7 +83,7 @@ const App = () => (
 						}
 					/>
 					<Route
-						path='/verify/request'
+						path="/verify/request"
 						element={
 							<CheckAuthenticated>
 								<SendVerificationEmail />
@@ -91,7 +91,7 @@ const App = () => (
 						}
 					/>
 					<Route
-						path='/verify/:token'
+						path="/verify/:token"
 						element={
 							<CheckAuthenticated>
 								<Verify />
@@ -99,7 +99,7 @@ const App = () => (
 						}
 					/>
 					<Route
-						path='/dashboard'
+						path="/dashboard"
 						element={
 							<CheckNotAuthenticated>
 								<Dashboard />
@@ -107,7 +107,7 @@ const App = () => (
 						}
 					/>
 					<Route
-						path='/stocks'
+						path="/stocks"
 						element={
 							<CheckNotAuthenticated>
 								<Medicine />
@@ -115,7 +115,7 @@ const App = () => (
 						}
 					/>
 					<Route
-						path='/stocks/new'
+						path="/stocks/new"
 						element={
 							<CheckNotAuthenticated>
 								<AddMedicine />
@@ -123,7 +123,7 @@ const App = () => (
 						}
 					/>
 					<Route
-						path='/stocks/:id'
+						path="/stocks/:id"
 						element={
 							<CheckNotAuthenticated>
 								<EditMedicine />
@@ -131,7 +131,7 @@ const App = () => (
 						}
 					/>
 					<Route
-						path='/profile'
+						path="/profile"
 						element={
 							<CheckNotAuthenticated>
 								<Profile />
@@ -139,7 +139,7 @@ const App = () => (
 						}
 					/>
 					<Route
-						path='/profile/edit'
+						path="/profile/edit"
 						element={
 							<CheckNotAuthenticated>
 								<EditProfile />
@@ -149,8 +149,10 @@ const App = () => (
 				</Routes>
 			</Suspense>
 		</Layout>
-		<ToastContainer data-testid="toast" position={toast.POSITION.BOTTOM_RIGHT} />
-
+		<ToastContainer
+			data-testid="toast"
+			position={toast.POSITION.BOTTOM_RIGHT}
+		/>
 	</>
 );
 

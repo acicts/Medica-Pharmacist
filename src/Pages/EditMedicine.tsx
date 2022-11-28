@@ -30,18 +30,18 @@ interface inputProps {
 const Input = forwardRef(
 	(props: inputProps, ref: LegacyRef<HTMLInputElement>) => {
 		return (
-			<div className='w-full mb-[10px] md:mb-[15px] last:mb-[0px]'>
-				<label className=' text-xs'>{props.placeholder}</label>
+			<div className="w-full mb-[10px] md:mb-[15px] last:mb-[0px]">
+				<label className=" text-xs">{props.placeholder}</label>
 				<input
 					ref={ref}
 					onChange={props.onChange}
 					onBlur={props.onBlur}
 					type={props.type}
 					value={props.value}
-					className='border-gray-500  mx-auto border-[1px] border-solid bg-[#F6FFF3] rounded-md block p-[9px] w-full text-left'
+					className="border-gray-500  mx-auto border-[1px] border-solid bg-[#F6FFF3] rounded-md block p-[9px] w-full text-left"
 				/>
 				{props.hasError && (
-					<p className='text-red-500 text-xs'>
+					<p className="text-red-500 text-xs">
 						<sup>*</sup>
 						{props.errorMessage}
 					</p>
@@ -64,8 +64,8 @@ interface selectProps {
 const TextArea = forwardRef(
 	(props: inputProps, ref: LegacyRef<HTMLTextAreaElement>) => {
 		return (
-			<div className='w-full mb-[15px]'>
-				<label className='text-xs'>{props.placeholder}</label>
+			<div className="w-full mb-[15px]">
+				<label className="text-xs">{props.placeholder}</label>
 				<textarea
 					ref={ref}
 					onChange={
@@ -74,10 +74,10 @@ const TextArea = forwardRef(
 					onBlur={props.onBlur}
 					rows={6}
 					value={props.value}
-					className='border-gray-500 bg-[#F6FFF3] resize-none border-[1px] border-solid w-full rounded-sm p-[5px]'
+					className="border-gray-500 bg-[#F6FFF3] resize-none border-[1px] border-solid w-full rounded-sm p-[5px]"
 				></textarea>
 				{props.hasError && (
-					<p className='text-red-500 text-xs'>
+					<p className="text-red-500 text-xs">
 						<sup>*</sup>
 						{props.errorMessage}
 					</p>
@@ -91,9 +91,9 @@ const DropDown = forwardRef(
 	(props: selectProps, ref: LegacyRef<HTMLSelectElement>) => {
 		const options = [props.defaultValue, ...props.options];
 		return (
-			<div className='w-full mb-[15px]'>
+			<div className="w-full mb-[15px]">
 				{props.label && (
-					<label className='text-xs text-primary block'>
+					<label className="text-xs text-primary block">
 						{props.label}
 					</label>
 				)}
@@ -106,7 +106,7 @@ const DropDown = forwardRef(
 							: '---'
 					}
 					ref={ref}
-					className='border-gray-500 bg-[#F6FFF3]  mx-auto form-input border-[1px] border-solid w-full rounded-sm p-[9px]'
+					className="border-gray-500 bg-[#F6FFF3]  mx-auto form-input border-[1px] border-solid w-full rounded-sm p-[9px]"
 				>
 					{options.length > 0 &&
 						options.map((_item) => {
@@ -114,7 +114,7 @@ const DropDown = forwardRef(
 						})}
 				</select>
 				{props.hasError && (
-					<p className='text-red-500 text-xs'>
+					<p className="text-red-500 text-xs">
 						<sup>*</sup>
 						{props.errorMessage}
 					</p>
@@ -131,7 +131,7 @@ const EditProfile = () => {
 	const [uploading, setUploading] = useState(false);
 	const [imageUploading, setImageUploading] = useState(false);
 	const { id } = useParams();
-	const authCtx = useContext(authContext)
+	const authCtx = useContext(authContext);
 	const medicineNameValidator = useInput(
 		(inputVal) => inputVal.trim().length > 0
 	);
@@ -153,21 +153,29 @@ const EditProfile = () => {
 			.get(url)
 			.then((response) => {
 				console.log(response);
-				medicineNameValidator.setInputValue(response.data._medicine.name);
-				manufacturerValidator.setInputValue(response.data._medicine.manufacturer);
-				sciNameValidator.setInputValue(response.data._medicine.chemicalName);
-				desctiptionValidator.setInputValue(response.data._medicine.description);
-				setQty(response.data._medicine.stock)
-				setImage(response.data._medicine.image.link)
-				pricePerUnitValidator.setInputValue(response.data._medicine.pricePerUnit)
-				console.log(response.data._medicine.description)
+				medicineNameValidator.setInputValue(
+					response.data._medicine.name
+				);
+				manufacturerValidator.setInputValue(
+					response.data._medicine.manufacturer
+				);
+				sciNameValidator.setInputValue(
+					response.data._medicine.chemicalName
+				);
+				desctiptionValidator.setInputValue(
+					response.data._medicine.description
+				);
+				setQty(response.data._medicine.stock);
+				setImage(response.data._medicine.image.link);
+				pricePerUnitValidator.setInputValue(
+					response.data._medicine.pricePerUnit
+				);
+				console.log(response.data._medicine.description);
 			})
 			.catch(console.log);
-	}, [
-		authCtx.token,
-	]);
+	}, [authCtx.token]);
 	useEffect(() => {
-		setLoading(true)
+		setLoading(true);
 		const fetchData = async () => {
 			setLoading(true);
 			const medicineURL =
@@ -179,65 +187,75 @@ const EditProfile = () => {
 		};
 		fetchData();
 		fetchMedicineData();
-		setLoading(false)
+		setLoading(false);
 	}, [fetchMedicineData]);
 
 	const updateImageHandler: any = (files: FileList) => {
-		setImageUploading(true)
+		setImageUploading(true);
 		const url = `${process.env.REACT_APP_API_ENDPOINT}/pharmacist/medicine/image/${id}?token=${authCtx.token}`;
 		const formData = new FormData();
 		formData.append('image', files[0]);
 
-		axios.put(url, formData).then((response) => {
-			console.log(response)
-			const data = response.data;
-			if (data.success) {
-				setImage(data.link)
-			}
-			setImageUploading(false)
-		}).catch(console.log)
-	}
+		axios
+			.put(url, formData)
+			.then((response) => {
+				console.log(response);
+				const data = response.data;
+				if (data.success) {
+					setImage(data.link);
+				}
+				setImageUploading(false);
+			})
+			.catch(console.log);
+	};
 	const updateMedicineHandler: FormEventHandler<HTMLFormElement> = (e) => {
 		e.preventDefault();
-		setUploading(true)
+		setUploading(true);
 		const body = JSON.stringify({
 			name: medicineNameValidator.inputValue,
 			chemicalName: sciNameValidator.inputValue,
 			description: desctiptionValidator.inputValue,
 			stock: qty,
 			manufacturer: manufacturerValidator.inputValue,
-			pricePerUnit: pricePerUnitValidator.inputValue
-		})
+			pricePerUnit: pricePerUnitValidator.inputValue,
+		});
 
 		const url = `${process.env.REACT_APP_API_ENDPOINT}/pharmacist/medicine/${id}?token=${authCtx.token}`;
 
-		axios.put(url, body, {
-			headers: {
-				'Content-Type': 'application/json'
-			}
-		}).then((response) => {
-			console.log(response)
-			if (response.data.success) {
-				toast.success(response.data.message)
-			}
-			else {
-				toast.error(response.data.message)
-			}
-			setUploading(false)
-		}).catch(console.log)
-	}
+		axios
+			.put(url, body, {
+				headers: {
+					'Content-Type': 'application/json',
+				},
+			})
+			.then((response) => {
+				console.log(response);
+				if (response.data.success) {
+					toast.success(response.data.message);
+				} else {
+					toast.error(response.data.message);
+				}
+				setUploading(false);
+			})
+			.catch(console.log);
+	};
 
-	const navigate = useNavigate()
-	return (
-		loading ? <h1>Loading...</h1> : <div>
-			<section className='mb-[15px] md:mb-[30px]'>
-				<h1 className='text-2xl font-bold'>Edit Medicine</h1>
-				<p className='text-xs'>Edit medicine details</p>
+	const navigate = useNavigate();
+	return loading ? (
+		<h1>Loading...</h1>
+	) : (
+		<div>
+			<section className="mb-[15px] md:mb-[30px]">
+				<h1 className="text-2xl font-bold">Edit Medicine</h1>
+				<p className="text-xs">Edit medicine details</p>
 			</section>
-			<section className='w-full rounded-md border-[1px] border-solid border-[#6C6C6C] bg-[#FFFF] p-[15px]'>
-				<form onSubmit={updateMedicineHandler} className='w-full flex items-start justify-between flex-col md:flex-row'>
-					<div className='w-full flex items-start justify-between mb-[15px] sm:flex-col md:w-min'>
-						<span className='font-bold text-[#5E5E5E]'>Image</span>
+			<section className="w-full rounded-md border-[1px] border-solid border-[#6C6C6C] bg-[#FFFF] p-[15px]">
+				<form
+					onSubmit={updateMedicineHandler}
+					className="w-full flex items-start justify-between flex-col md:flex-row"
+				>
+					<div className="w-full flex items-start justify-between mb-[15px] sm:flex-col md:w-min">
+						<span className="font-bold text-[#5E5E5E]">Image</span>
 						{/* <label
 							className='w-[125px] h-[125px] sm:w-[175px] sm:h-[175px] rounded-md relative'
 							htmlFor='profilePic'
@@ -267,70 +285,77 @@ const EditProfile = () => {
 						<Dropzone onDrop={updateImageHandler}>
 							{({ getRootProps, getInputProps }) => (
 								<section
-
 									className="aspect-square w-40 rounded-md px-3 text-center items-center flex flex-col justify-center cursor-pointer relative"
 									{...getRootProps()}
 									style={{
 										backgroundPosition: 'center',
 										backgroundSize: 'cover',
 										backgroundRepeat: 'no-repeat',
-										backgroundImage: `url(${image})`
+										backgroundImage: `url(${image})`,
 									}}
 								>
-
-									<div className='bg-black text-sm bg-opacity-30 text-white rounded-b-md  w-full py-[5px] text-center absolute bottom-0 left-0'>
-										{imageUploading ? <Bars
-											height="20"
-											width="20"
-											color="#FFF"
-											ariaLabel="bars-loading"
-											wrapperStyle={{
-												width: 'max-content',
-												margin: 'auto'
-											}}
-											wrapperClass=""
-											visible={true}
-										/> : 'Upload Image'}
+									<div className="bg-black text-sm bg-opacity-30 text-white rounded-b-md  w-full py-[5px] text-center absolute bottom-0 left-0">
+										{imageUploading ? (
+											<Bars
+												height="20"
+												width="20"
+												color="#FFF"
+												ariaLabel="bars-loading"
+												wrapperStyle={{
+													width: 'max-content',
+													margin: 'auto',
+												}}
+												wrapperClass=""
+												visible={true}
+											/>
+										) : (
+											'Upload Image'
+										)}
 									</div>
 									<input
 										{...getInputProps()}
-										accept='image/png, image/jpg, image/jpeg'
+										accept="image/png, image/jpg, image/jpeg"
 									/>
 								</section>
 							)}
 						</Dropzone>
-						<input type='file' id='profilePic' className='hidden' onChange={updateImageHandler} />
+						<input
+							type="file"
+							id="profilePic"
+							className="hidden"
+							onChange={updateImageHandler}
+						/>
 					</div>
-					<div className='w-full md:w-[60%]'>
-						<span className='font-bold text-[#5E5E5E] mb-[15px]'>
+					<div className="w-full md:w-[60%]">
+						<span className="font-bold text-[#5E5E5E] mb-[15px]">
 							Pharmacy Information
 						</span>
-						<hr color='#5E5E5E' />
+						<hr color="#5E5E5E" />
 						<Input
-							placeholder='Medicine Name*'
-							type='text'
+							placeholder="Medicine Name*"
+							type="text"
 							onChange={medicineNameValidator.valueChangeHandler}
 							onBlur={medicineNameValidator.inputBlurHandler}
 							ref={
 								medicineNameValidator.inputRef as RefObject<HTMLInputElement>
 							}
 							hasError={medicineNameValidator.hasError}
-							errorMessage='Please enter a valid name'
+							errorMessage="Please enter a valid name"
 							value={medicineNameValidator.inputValue}
 						/>
-						<div className='mb-[15px] w-full'>
-							<label className='text-xs'>Quantity*</label>
-							<div className='block'>
-								<span className='text-xl font-bold pl-[15px]'>
+						<div className="mb-[15px] w-full">
+							<label className="text-xs">Quantity*</label>
+							<div className="block">
+								<span className="text-xl font-bold pl-[15px]">
 									{qty}
 								</span>
-								<div className='flex'>
+								<div className="flex">
 									<button
 										onClick={() => {
 											setQty((curr) => curr + 1);
 										}}
-										type='button'
-										className='text-center w-[40px] h-[40px] flex items-center rounded-full justify-center mr-[10px] border-md bg-emerald-900 text-white'
+										type="button"
+										className="text-center w-[40px] h-[40px] flex items-center rounded-full justify-center mr-[10px] border-md bg-emerald-900 text-white"
 									>
 										+
 									</button>
@@ -339,8 +364,8 @@ const EditProfile = () => {
 											if (qty > 0)
 												setQty((curr) => curr - 1);
 										}}
-										type='button'
-										className='text-center w-[40px] h-[40px] flex items-center rounded-full justify-center border-md bg-gray-300'
+										type="button"
+										className="text-center w-[40px] h-[40px] flex items-center rounded-full justify-center border-md bg-gray-300"
 									>
 										-
 									</button>
@@ -348,73 +373,84 @@ const EditProfile = () => {
 							</div>
 						</div>
 						<Input
-							placeholder='Price Per Unit*'
-							type='number'
+							placeholder="Price Per Unit*"
+							type="number"
 							onChange={pricePerUnitValidator.valueChangeHandler}
 							onBlur={pricePerUnitValidator.inputBlurHandler}
 							ref={
 								pricePerUnitValidator.inputRef as RefObject<HTMLInputElement>
 							}
 							hasError={pricePerUnitValidator.hasError}
-							errorMessage='Please enter a valid price'
+							errorMessage="Please enter a valid price"
 							value={pricePerUnitValidator.inputValue}
 						/>
 						<DropDown
 							hasError={sciNameValidator.hasError}
 							options={medicines}
-							errorMessage='Please select the scientific name of the medicine'
-							label='Select Scientific Name*'
+							errorMessage="Please select the scientific name of the medicine"
+							label="Select Scientific Name*"
 							onChange={sciNameValidator.valueChangeHandler}
 							onBlur={sciNameValidator.inputBlurHandler}
 							defaultValue={
-								loading ? 'Loading...' : sciNameValidator.inputValue
+								loading
+									? 'Loading...'
+									: sciNameValidator.inputValue
 							}
 						/>
 						<Input
-							placeholder='Manufacturer*'
-							type='text'
+							placeholder="Manufacturer*"
+							type="text"
 							onChange={manufacturerValidator.valueChangeHandler}
 							onBlur={manufacturerValidator.inputBlurHandler}
 							ref={
 								manufacturerValidator.inputRef as RefObject<HTMLInputElement>
 							}
 							hasError={manufacturerValidator.hasError}
-							errorMessage='Please enter manufacturers name'
+							errorMessage="Please enter manufacturers name"
 							value={manufacturerValidator.inputValue}
 						/>
 
 						<TextArea
-							placeholder='Description(optional)'
-							type='text'
+							placeholder="Description(optional)"
+							type="text"
 							onChange={desctiptionValidator.valueChangeHandler}
 							onBlur={desctiptionValidator.inputBlurHandler}
 							ref={
 								desctiptionValidator.inputRef as RefObject<HTMLTextAreaElement>
 							}
 							hasError={desctiptionValidator.hasError}
-							errorMessage='Please enter a description'
-							value={desctiptionValidator.inputValue} />
-						<div className='flex justify-between mb-[15px]'>
+							errorMessage="Please enter a description"
+							value={desctiptionValidator.inputValue}
+						/>
+						<div className="flex justify-between mb-[15px]">
 							<div />
-							<div className='flex'>
+							<div className="flex">
 								<button
-									type='submit'
-									className='text-center w-[100px] mr-[10px] p-[5px] border-md bg-emerald-900 text-white'
+									type="submit"
+									className="text-center w-[100px] mr-[10px] p-[5px] border-md bg-emerald-900 text-white"
 								>
-									{uploading ? <Circles
-										height="20"
-										width="20"
-										color="#FFF"
-										ariaLabel="circles-loading"
-										wrapperStyle={{
-											margin: 'auto',
-											width: 'max-content'
-										}}
-										wrapperClass=""
-										visible={true}
-									/> : 'Save'}
+									{uploading ? (
+										<Circles
+											height="20"
+											width="20"
+											color="#FFF"
+											ariaLabel="circles-loading"
+											wrapperStyle={{
+												margin: 'auto',
+												width: 'max-content',
+											}}
+											wrapperClass=""
+											visible={true}
+										/>
+									) : (
+										'Save'
+									)}
 								</button>
-								<button onClick={() => navigate(-1)} type='button' className='text-center w-[100px] p-[5px] border-md bg-gray-300'>
+								<button
+									onClick={() => navigate(-1)}
+									type="button"
+									className="text-center w-[100px] p-[5px] border-md bg-gray-300"
+								>
 									Cancel
 								</button>
 							</div>

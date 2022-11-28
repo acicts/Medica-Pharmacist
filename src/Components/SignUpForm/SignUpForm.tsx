@@ -38,13 +38,42 @@ const SignupForm = () => {
 			label: 'Address',
 		},
 		{
-			...useInput(inputVal => inputVal.trim().length > 0 && inputVal !== '-- DISTRICTS --'),
+			...useInput(
+				(inputVal) =>
+					inputVal.trim().length > 0 && inputVal !== '-- DISTRICTS --'
+			),
 			errorMsg: 'Please select a district',
 			id: 'district',
 			type: 'drop-down',
 			label: 'Discrict',
 			defaultValue: '-- DISTRICTS --',
-			options: ['Ampara', 'Anuradhapura', 'Badulla', 'Batticaloa', 'Colombo', 'Galle', 'Gampaha', 'Hambantota', 'Jaffna', 'Kalutara', 'Kandy', 'Kegalle', 'Kilinochchi', 'Kurunegala', 'Mannar', 'Matale', 'Matara', 'Moneragala', 'Mullaitivu', 'Nuwara Eliya', 'Polonnaruwa', 'Puttalam', 'Ratnapura', 'Trincomalee', 'Vavuniya']
+			options: [
+				'Ampara',
+				'Anuradhapura',
+				'Badulla',
+				'Batticaloa',
+				'Colombo',
+				'Galle',
+				'Gampaha',
+				'Hambantota',
+				'Jaffna',
+				'Kalutara',
+				'Kandy',
+				'Kegalle',
+				'Kilinochchi',
+				'Kurunegala',
+				'Mannar',
+				'Matale',
+				'Matara',
+				'Moneragala',
+				'Mullaitivu',
+				'Nuwara Eliya',
+				'Polonnaruwa',
+				'Puttalam',
+				'Ratnapura',
+				'Trincomalee',
+				'Vavuniya',
+			],
 		},
 		{
 			...useInput(
@@ -90,17 +119,17 @@ const SignupForm = () => {
 
 	const formSubmitHandler: FormEventHandler = (e) => {
 		e.preventDefault();
-		console.log('Submitting....')
+		console.log('Submitting....');
 		for (let i = 0; i < authenticationDataValidatos.length; i++) {
 			if (!authenticationDataValidatos[i].isInputValid) {
 				return authenticationDataValidatos[i].focusHandler();
 			}
 		}
-		setUploading(true)
+		setUploading(true);
 		const formData: any = new FormData();
 		formData.append('logo', logo);
 		formData.append('pharmacyPassImg', passImg);
-		formData.append('host', window.location.origin)
+		formData.append('host', window.location.origin);
 
 		contactValidators.forEach((validator) => {
 			formData.append(validator.id, validator.inputValue);
@@ -120,23 +149,22 @@ const SignupForm = () => {
 			.then((response) => {
 				console.log(response);
 				if (response.data.success) {
-					toast.success(response.data.message)
+					toast.success(response.data.message);
 					contactValidators.forEach((validator) => {
-						validator.reset()
+						validator.reset();
 					});
 
 					authenticationDataValidatos.forEach((validator) => {
-						validator.reset()
+						validator.reset();
 					});
 
 					verificationDataValidators.forEach((validator) => {
-						validator.reset()
+						validator.reset();
 					});
+				} else {
+					toast.error(response.data.message);
 				}
-				else {
-					toast.error(response.data.message)
-				}
-				setUploading(false)
+				setUploading(false);
 			})
 			.catch(console.log);
 	};
@@ -148,14 +176,14 @@ const SignupForm = () => {
 					return contactValidators[i].focusHandler();
 				}
 			}
-			if (!logo) return setLogoFocused(true)
+			if (!logo) return setLogoFocused(true);
 		} else if (currSection === 1) {
 			for (let i = 0; i < verificationDataValidators.length; i++) {
 				if (!verificationDataValidators[i].isInputValid) {
 					return verificationDataValidators[i].focusHandler();
 				}
 			}
-			if (!passImg) return setPassImgFocused(true)
+			if (!passImg) return setPassImgFocused(true);
 		}
 		setCurrSection((curr) => curr + 1);
 	};
@@ -164,7 +192,7 @@ const SignupForm = () => {
 		<>
 			<form
 				onSubmit={formSubmitHandler}
-				className='min-h-[80vh] md:min-h-[70vh] flex flex-col items-start justify-between w-full'
+				className="min-h-[80vh] md:min-h-[70vh] flex flex-col items-start justify-between w-full"
 			>
 				{currSection === 0 ? (
 					<ContactSection
@@ -187,66 +215,76 @@ const SignupForm = () => {
 						setPassImgFocused={setPassImgFocused}
 					/>
 				) : (
-					<CredentialsSection validators={authenticationDataValidatos} />
+					<CredentialsSection
+						validators={authenticationDataValidatos}
+					/>
 				)}
-				<div className='w-full'>
-					<div className='flex items-end justify-between w-[40px] ml-[5px] mt-[45px] mb-[15px]'>
+				<div className="w-full">
+					<div className="flex items-end justify-between w-[40px] ml-[5px] mt-[45px] mb-[15px]">
 						{sections.map((section) => (
 							<div
-								className={`w-[8px] h-[8px] transition-colors rounded-full ${currSection === section
-									? 'bg-[#2F8D76]'
-									: 'bg-gray-400'
-									}`}
+								className={`w-[8px] h-[8px] transition-colors rounded-full ${
+									currSection === section
+										? 'bg-[#2F8D76]'
+										: 'bg-gray-400'
+								}`}
 							/>
 						))}
 					</div>
-					<div className='flex items-center justify-between w-52 md:w-80'>
+					<div className="flex items-center justify-between w-52 md:w-80">
 						{currSection !== 0 && (
 							<button
-								type='button'
+								type="button"
 								onClick={() => setCurrSection(currSection - 1)}
-								className='register-btn'
+								className="register-btn"
 							>
 								Back
 							</button>
 						)}
 						{currSection === 2 ? (
 							<button
-								type='submit'
-								className='register-btn'
-								id='reg-btn'
-							>{uploading ? <Circles
-								height="20"
-								width="20"
-								color="#FFF"
-								ariaLabel="circles-loading"
-								wrapperStyle={{
-									margin: 'auto',
-									width: 'max-content'
-								}}
-								wrapperClass=""
-								visible={true}
-							/> : 'Sign Up'}</button>
+								type="submit"
+								className="register-btn"
+								id="reg-btn"
+							>
+								{uploading ? (
+									<Circles
+										height="20"
+										width="20"
+										color="#FFF"
+										ariaLabel="circles-loading"
+										wrapperStyle={{
+											margin: 'auto',
+											width: 'max-content',
+										}}
+										wrapperClass=""
+										visible={true}
+									/>
+								) : (
+									'Sign Up'
+								)}
+							</button>
 						) : (
 							<button
 								onClick={sectionIncrementHanlder}
-								type='button'
-								className='register-btn'
+								type="button"
+								className="register-btn"
 							>
 								Next
 							</button>
 						)}
 					</div>
-					<div className='font-light text-[#2F8D76] mb-[15px]'>
+					<div className="font-light text-[#2F8D76] mb-[15px]">
 						<p>
 							Already have an account?{' '}
-							<Link to='/login' className='underline'>
+							<Link to="/login" className="underline">
 								Login
 							</Link>
 						</p>
 					</div>
 				</div>
-			</form></>
+			</form>
+		</>
 	);
 };
 
